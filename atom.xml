@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2020-09-14T11:28:26.458Z</updated>
+    <updated>2020-09-14T14:01:24.678Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -10,6 +10,26 @@
     <logo>https://yuqiusuo.github.io/images/avatar.png</logo>
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 北落师门</rights>
+    <entry>
+        <title type="html"><![CDATA[刀锋]]></title>
+        <id>https://yuqiusuo.github.io/post/202009142152/</id>
+        <link href="https://yuqiusuo.github.io/post/202009142152/">
+        </link>
+        <updated>2020-09-14T13:52:15.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>作者：毛姆</p>
+</blockquote>
+<p>今天把毛姆的「刀锋」读完，这本书和「月亮与六便士」都给了我同样的触感：「为什么有的人能这样生活下去呢？」。这两本书的主人公都追求着不同于普通人生的生活，他们不惧世俗的眼光，都只是过自己想过的生活。</p>
+<p>但是我觉得「刀锋」相对于「月亮与六便士」而言要相对温和些。拉里作为一个「战争英雄」的角色进入到读者的眼中，他本拥有着「不错的」未来，但是他却执意放弃原本的生命节奏，取消订婚，不断地读书、体验生活、拜访导师，去寻找生命的真谛，最终「散尽家财」，过上普普通通的生活，只为寻求自己生命的真谛。</p>
+<p>拉里传达给我的消息现在想来其实很简单：「生命属于自己，不要随波逐流」。</p>
+<p>我们时常也用这句话安慰自己，告诉自己不必去比较、不必去在意别人的看法，但是往往无法做到，我们就是无可避免去把自己周边的人作比较，就是在意A有几套房、B工资几何、C结婚生子。每个人的人生都只有一次，也许父母朋友会把各种道理摆上台前，以过来人的身份告诫我们要听从劝告，只是我们要有分别的去对待这些「道理」。</p>
+<p>每个人都希望寻求自己生命的真谛，在生命的种种挫折之下，我们往往服从于生活，我们希望过上跟别人一样的生活，放弃了自己的特异性。这种放弃同样也给了我们束缚，我们要把自己跟别人摆在一起，我们会去在意别人有什么而我们没有，这样我们就感到焦虑；在意我们有什么别人没有，我们就感到优越。这种比较我有时觉得是人生而既有的东西，我们一生追求的无非就是平和而已。</p>
+<p>在经历种种「焦虑症状」突发之后，我发现自己依然无法放下这些比较，因为这种躺平并不是为了寻求告解，只是为了躺平而躺平而已，很难受，很纠结，很焦虑。思考的习惯无时无刻不在提醒自己要努力一些，只有真切感到焦虑发作的时候才会告诉自己要平和，身体的习惯却只能堕落性质地躺平。一切都处在违和的状态之下，却一次次在冲突之中寻找出口。</p>
+<p>我们未必能做到大彻大悟，拉里在最后也没有说一定做到顿悟，只是在平常的生活之中继续体验、继续思考、继续总结。</p>
+<p>我认为生活就是为了一次一次的「体验」，我们要更多地尝试新鲜的实物、去认识新鲜的人、去看看新鲜的地方。在到达生命尽头之前，永远保持好奇心，不是为了势利地前进，而是为了与世界更多次地握手。我们未必能体会到成功者地生活，但不能体验到的生活亦不可强求。</p>
+<p>越过刀锋实属不易，因而智者常言救赎之道艰辛。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Flex布局]]></title>
         <id>https://yuqiusuo.github.io/post/flex/</id>
@@ -945,75 +965,6 @@ console.log(typeof descriptor.get); // &quot;function&quot;
 <p>持续学习就不需要过多的表述了，很多人在30岁之后就停止成长了，希望自己能够把持续学习记在心上，实践在行动上。这让我想到我的父亲，在50岁之后学习财务，成为一家公司的财务总监，这种持续学习的态度和能力，都会是我终身的榜样。</p>
 <p>「态度」一书中还提到了很多的观点值得我学习，可是我们总是爱做思考、做规划，才发现要学习的事情太多了，总会让人望而却步。希望自己能够秉承着「脚踏实地」的态度，持续学习、持续成长，最终能多做一些对社会有益的事情。</p>
 <figure data-type="image" tabindex="1"><img src="http://file.yuqiusuo.top/img/20200914164405.png" alt="态度 xmind" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[事件循环以及浏览器渲染时机]]></title>
-        <id>https://yuqiusuo.github.io/post/202009141500/</id>
-        <link href="https://yuqiusuo.github.io/post/202009141500/">
-        </link>
-        <updated>2020-09-14T07:20:04.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="事件循环机制event-loop">事件循环机制（Event Loop）</h2>
-<p>我们知道JS是单线程的，这意味着在同一时刻，JS只会处理一件事情，但是我们在平时写前端代码时，总会杂糅着进行「处理事件」、「执行AJAX请求」、「调用API」等各种事情，这就依靠事件循环机制（Event Loop）来处理。主要的进行步骤，能查到的资料有很多，总结就是以下几步：</p>
-<ol>
-<li>从<strong>事件队列</strong>中取出一项「宏任务」进行处理；</li>
-<li>检查「微任务」队列中是否有需要处理的「微任务」
-<ul>
-<li>如果有「微任务」，逐一处理</li>
-<li>在此期间产生的「微任务」，放入「微任务队列」末尾</li>
-</ul>
-</li>
-<li>执行 UI 渲染
-<ul>
-<li>判断是否需要渲染
-<ul>
-<li>渲染只保证浏览器60Hz的刷新频率</li>
-<li>并非每次循环都会触发渲染</li>
-<li>触发<code>resize</code>、<code>scroll</code>等事件</li>
-<li>执行css动画</li>
-<li>等等</li>
-</ul>
-</li>
-<li>执行<code>requestAnimationFrame</code></li>
-<li>执行<code>IntersectionObserver callback</code></li>
-<li>渲染UI</li>
-</ul>
-</li>
-<li>如果「宏任务队列」为空，休眠直到一个「宏任务」出现</li>
-<li>回到第一步</li>
-</ol>
-<h2 id="宏任务及微任务">宏任务及微任务</h2>
-<p>哪些事件会触发「宏任务」及「微任务」呢？见下图：</p>
-<figure data-type="image" tabindex="1"><img src="http://q3bv8d9ot.bkt.clouddn.com/img/20200102212737.png" alt="" loading="lazy"></figure>
-<h4 id="宏任务">宏任务</h4>
-<p>产生宏任务的主要来源有：</p>
-<ol>
-<li>DOM操作</li>
-<li>监听事件回调（键盘、鼠标事件等）</li>
-<li>AJAX请求</li>
-<li>调用浏览器API（如：history.back()）</li>
-<li>setTimeout/setInterval</li>
-<li>操作IndexDB</li>
-</ol>
-<p>已上产生的事件，每次只会执行一件。</p>
-<h4 id="微任务">微任务</h4>
-<p>产生微任务的主要来源有：</p>
-<ol>
-<li>Promise.then、Promise.catch、Promise.finally</li>
-<li>MutationObserver</li>
-<li>Object.observe</li>
-</ol>
-<p>「微任务队列」中的事件会逐一执行。</p>
-<h4 id="requestanimationframe">requestAnimationFrame</h4>
-<p>requestAnimationFrame的回调机制在不同的浏览器上不同，在<code>Eage</code>和<code>Safari</code>上会在UI渲染之后调用，在<code>Chrome</code>和<code>Firefox</code>上会在UI渲染之前调用。</p>
-<h2 id="结语">结语</h2>
-<p>已上记录了一些关于事件循环（Event Loop）以及浏览器渲染时机的知识点，关于事件循环（Event Loop）能搜索到很多的题目去练习，了解原理后可以结合题目作更深的理解。</p>
-<hr>
-<h4 id="参考">参考</h4>
-<p><a href="https://www.404forest.com/2017/07/18/how-javascript-actually-works-eventloop-and-uirendering/">深入探究 eventloop 与浏览器渲染的时序问题</a></p>
-<p><a href="https://html.spec.whatwg.org/multipage/webappapis.html">webappapis</a></p>
-<p><a href="https://www.bilibili.com/video/av63614289?from=search&amp;seid=194262817695151355">【前端】事件原理讲解</a></p>
-<p><a href="https://zh.javascript.info/event-loop">事件循环：微任务和宏任务</a></p>
 ]]></content>
     </entry>
 </feed>
