@@ -1,0 +1,446 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JS面向对象-理解对象 | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1600074203206">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="JS面向对象-理解对象 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第一篇「理解对象」回顾的笔记
+
+属性类型
+数据属性
+数据属性包含一个数据值的位置，在这个位置可以读取和 写入值。它有4个特性：
+
+[[Configureble]]
+
+..." />
+    <meta name="keywords" content="前端" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1600074203206" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/guan-yu" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              JS面向对象-理解对象
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-09-14
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<p>本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第一篇「理解对象」回顾的笔记</p>
+</blockquote>
+<h2 id="属性类型">属性类型</h2>
+<h3 id="数据属性">数据属性</h3>
+<p>数据属性包含一个数据值的位置，在这个位置可以读取和 写入值。它有4个特性：</p>
+<ul>
+<li><code>[[Configureble]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>delete</code>删除属性</li>
+<li>表示能否修改属性的特性</li>
+<li>表示能否把属性修改为访问器属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Enumerable]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>for-in</code>循环返回属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Writable]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否修改属性的值</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Value]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否修改属性的值</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>undefined</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如要修改属性默认的特性，需要使用<strong>ES5</strong>的<code>defineProperty()</code>方法，它接收3个参数：</p>
+<ul>
+<li>属性所在的对象</li>
+<li>属性的名字</li>
+<li>一个描述符对象
+<ul>
+<li>configurable</li>
+<li>enumerable</li>
+<li>writable</li>
+<li>value</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">// writable 控制数据是否只读
+var person = {};
+Object.defineProperty(person, 'name', {
+  writable: false,
+  value: 'Nicholas'
+});
+console.log(person.name); // Nicholas
+person.name = 'Greg'；
+console.log(person.name); // Nicholas
+
+// configurable设置为false后就不能再修改
+var person = {};
+Object.defineProperty(person, 'name', {
+  configurable: false,
+  value: 'Nicholas'
+});
+
+var person = {};
+Object.defineProperty(person, 'name', {
+  configurable: true,
+  value: 'Nicholas'
+}); // 报错
+</code></pre>
+<h3 id="访问器属性">访问器属性</h3>
+<p>访问器属性不包含数据值；它们包含一对<code>getter</code>和<code>setter</code>函数。读取时调用<code>getter</code>，写入时调用<code>setter</code>。访问器属性有4个特性：</p>
+<ul>
+<li>
+<p><code>[[Configureble]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>delete</code>删除属性</li>
+<li>表示能否修改属性的特性</li>
+<li>表示能否把属性修改为访问器属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Enumerable]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>for-in</code>循环返回属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Set]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>在读取属性时调用的函数</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li>undefined</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Get]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>在写入属性时调用的函数</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li>undefined</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">var book = {
+  _year: 2004,
+  edition: 1
+};
+Object.defineProperty(book, 'year', {
+  get: function() {
+    return this._year;
+  },
+  set: function(newValue) {
+    if(newValue &gt; 2004) {
+      this._year = newValue;
+      this.edition += newValue - 2004;
+    }
+  }
+});
+
+book.year = 2005;
+console.log(book.edition); // 12
+</code></pre>
+<h2 id="定义多个属性">定义多个属性</h2>
+<p>可以使用<code>Object.defineProperties</code>。示例：</p>
+<pre><code class="language-javascript">var book = {};
+Object.defineProperties(book, {
+  _year: {
+    value: 2004
+  },
+  edition: {
+		value: 1
+  },
+  year: {
+    get: function() {
+      return this._year;
+    },
+    set: function() {
+      if(newValue &gt; 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+      }
+    }
+  }
+});
+</code></pre>
+<h2 id="读取属性的特性">读取属性的特性</h2>
+<p>使用<code>Object.getOwnPropertyDescriptor()</code>，可以取得给制定属性的描述符。</p>
+<p>接收参数：</p>
+<ul>
+<li>属性所在对象</li>
+<li>要读取其描述符的属性名称</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>属性对象</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">var book = {};
+Object.defineProperties(book, {
+  _year: {
+    value: 2004
+  },
+  edition: {
+		value: 1
+  },
+  year: {
+    get: function() {
+      return this._year;
+    },
+    set: function() {
+      if(newValue &gt; 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+      }
+    }
+  }
+});
+
+var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
+console.log(descriptor.value); // 2004
+console.log(descriptor.configurable); // false
+console.log(typeof descriptor.get); // undefined
+
+var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
+console.log(descriptor.value); // undefined
+console.log(descriptor.enumerable); // false
+console.log(typeof descriptor.get); // &quot;function&quot;
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%B1%9E%E6%80%A7%E7%B1%BB%E5%9E%8B">属性类型</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%B1%9E%E6%80%A7">数据属性</a></li>
+<li><a href="#%E8%AE%BF%E9%97%AE%E5%99%A8%E5%B1%9E%E6%80%A7">访问器属性</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9A%E4%B9%89%E5%A4%9A%E4%B8%AA%E5%B1%9E%E6%80%A7">定义多个属性</a></li>
+<li><a href="#%E8%AF%BB%E5%8F%96%E5%B1%9E%E6%80%A7%E7%9A%84%E7%89%B9%E6%80%A7">读取属性的特性</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/liu-lan-qi-de-hui-liu-chong-pai-yu-chong-hui/">
+              <h3 class="post-title">
+                浏览器的回流(重排)与重绘 
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

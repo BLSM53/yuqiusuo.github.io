@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BFC与IFC | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1600074203206">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="BFC与IFC | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="##格式化上下文
+
+格式化上下文（Formatting Context）是Web页面的可视化CSS渲染的根据，细分为IFC、BFC、FFC和GFC。关键在于能用它们做什么。
+
+网页的显示页面中，每一部分都是格式化上下文的一部分。在页面的渲染..." />
+    <meta name="keywords" content="前端" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1600074203206" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/guan-yu" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              BFC与IFC
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-09-14
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>##格式化上下文</p>
+<blockquote>
+<p>格式化上下文（Formatting Context）是Web页面的可视化CSS渲染的根据，细分为IFC、BFC、FFC和GFC。关键在于能用它们做什么。</p>
+</blockquote>
+<p>网页的显示页面中，每一部分都是格式化上下文的一部分。在页面的渲染中，有着各种各样独立的区域，他们就像每个国家都有自己的制度，通过这些制度来确立国家的运行机制。最终由这些国家来组成我们多姿多彩的世界。</p>
+<figure data-type="image" tabindex="1"><img src="http://q3bv8d9ot.bkt.clouddn.com/img/20200113215358.png" alt="多种格式化上下文组成页面的渲染模式" loading="lazy"></figure>
+<h2 id="bfcblock-formatting-contexts">BFC（Block formatting contexts）</h2>
+<p>BFC又称「块格式化上下文」，我们能在各大面试试题中见到它。MDN中对它的解释有一句：「参与BFC的元素使用CSS框模型概述的规则，该模型定义了元素的边距、边框和填充如何与同一上下文中的其他块交互」。简而言之，<strong>BFC是一个独立的区域，它内部的元素都依照它的规则渲染，并且不会与BFC外部打交道</strong>。</p>
+<p>所以我们能用BFC做什么呢？通常是以下几点：</p>
+<ol>
+<li>清除元素内部的浮动效果</li>
+<li>防止垂直的margin重叠</li>
+<li>防止margin溢出</li>
+<li>左边定宽，右边自适应布局（反之亦可）</li>
+</ol>
+<p>那么哪些方式会生成BFC元素呢？以下：</p>
+<ol>
+<li>浮动元素 <code>float: left;/float: right;</code></li>
+<li>绝对定位的元素 <code>position: absolute;/position: fixed;/position: sticky;</code></li>
+<li><code>display: inline-block;</code>的元素</li>
+<li>table标签内每一格，或者<code>display: table-*;</code>的元素</li>
+<li><code>overflow</code>不为 visible 的元素</li>
+<li><code>display: flow-root</code> 或者 <code>display: flow-root list-item</code> 的元素</li>
+<li><code>contain: layout/content/strict</code>的元素</li>
+<li><code>display: flex/inline-flex/grid/inline-grid</code> 的元素</li>
+<li><code>column-span: all</code> 的元素</li>
+</ol>
+<h2 id="ifcinline-formatting-contexts">IFC（Inline formatting contexts）</h2>
+<p>IFC又称「行内格式化上下文」。「其存在于其他格式上下文中，可以将其视为段落的上下文」。用法有以下几种：</p>
+<ol>
+<li>内联元素水平居中</li>
+<li>内联元素垂直居中</li>
+<li>段落展示</li>
+</ol>
+<h2 id="其他">其他</h2>
+<ul>
+<li>FFC（Flex formatting contexts）：<code>display: flex;</code>的元素，我们常说的弹性布局</li>
+<li>GFC（GrideLayout  formatting contexts）：<code>display: grid</code>的元素，网格布局</li>
+</ul>
+<hr>
+<h4 id="引用">引用</h4>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts">格式化上下文简介</a></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#bfcblock-formatting-contexts">BFC（Block formatting contexts）</a></li>
+<li><a href="#ifcinline-formatting-contexts">IFC（Inline formatting contexts）</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a><br>
+*
+<ul>
+<li><a href="#%E5%BC%95%E7%94%A8">引用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/202009141646/">
+              <h3 class="post-title">
+                vue打包兼容IE11
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

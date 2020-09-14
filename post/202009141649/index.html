@@ -1,0 +1,236 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>谈前端权限 | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1600074203206">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="谈前端权限 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+自从有了前后端分离，前端的工作内容就变得越发多起来，其中有一项就是权限控制，下面就谈一谈前端权限。
+
+WHAT
+首先我们要理清前端权限是什么，我理解的前端权限就是控制前端元素是否可见。因为之前后台模板时代，我们的页面都是通过后台来渲染的，..." />
+    <meta name="keywords" content="前端" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1600074203206" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/guan-yu" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              谈前端权限
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-09-14
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<p>自从有了前后端分离，前端的工作内容就变得越发多起来，其中有一项就是权限控制，下面就谈一谈前端权限。</p>
+</blockquote>
+<h4 id="what">WHAT</h4>
+<p>首先我们要理清前端权限是什么，我理解的前端权限就是<strong>控制前端元素是否可见</strong>。因为之前后台模板时代，我们的页面都是通过后台来渲染的，能不能访问到页面直接由后台逻辑判断就好。但是现在我们到了前后端分离时代，所有页面的元素都由页面本身来控制，所以页面路由这块需要由前端本身来控制了。所以我认为前端权限有这几个关键点：</p>
+<ul>
+<li>前端权限是基于前后端分离之上的</li>
+<li>前端只能做视觉上的控制</li>
+<li>权限控制不能放在前端，后台还是需要对每一个接口做验权</li>
+</ul>
+<h4 id="why">WHY</h4>
+<p>下面我们说一说为什么说<strong>前端只能做视觉上的控制</strong>和<strong>权限控制不能放在前端，后台还是需要对每一个接口做验权</strong>。我觉得其实WEB本身就是围绕数据来的，所以我们前端安全，主要是保护我们的<strong>数据</strong>，那和数据最紧密接触的其实还是后台，前端本身做得是<strong>数据的展示和收集</strong>，但是数据的存储和处理并不是由前端来做。所以即使前端能控制住路由/按钮等不被别人看到，发送请求的方式还是有很多，完全可以绕过前端来请求数据。所以从某种意义上来说，就算前端的权限控制做得再严密，可能作用也是有限的。这也引申了后面一句，后台还是要对每一个接口做验权。</p>
+<h4 id="how">HOW</h4>
+<p>但是前端做权限控制还是非常有意义的，我觉得在安全性方面来说，前端就显示人体的皮肤，我们会是WEB安全的第一道防线。前端要做的工作，我认为有三种：</p>
+<ul>
+<li>前端路由展示</li>
+<li>前端按钮级别展示</li>
+<li>调用接口与后台配合</li>
+</ul>
+<ol>
+<li>
+<p>首先，我们所以说前端路由展示。这里其实可以分为两种方式来做路由权限控制：</p>
+<ul>
+<li>前端保存所有路由，通过请求获取权限列表，然后由前端筛选出来可访问路由进行展示</li>
+<li>前端仅保存文件关系，由后台根据user信息生成路由，通过请求传递到前端渲染</li>
+</ul>
+<p>第一种方法比较方便，后一种更灵活，比如我们的页面需要通过后台配置访问，就可以通过第二种方法来实现。</p>
+</li>
+<li>
+<p>按钮级别的展示（Vue示例）</p>
+<ul>
+<li>先通过请求获取到按钮级别的权限列表</li>
+<li>封装一个公用的筛选方法，再通过v-if调用该方法确定是否渲染 <strong>OR</strong> 封装一个指令（directive）来控制按钮是否渲染</li>
+</ul>
+</li>
+<li>
+<p>调用接口与后台配合</p>
+<p>其实我们最主要的与后台沟通的方式还是通过调用接口，与后台进行数据交流，但是如上所说，后台还是需要对每一个接口进行鉴权。前后端配合主要有以下几种方式：</p>
+<ul>
+<li>HTTP Basic Authentication</li>
+<li>session-Cookie   <strong>常用</strong></li>
+<li>Token-Cookie    <strong>常用</strong></li>
+<li>OAuth(开放授权) -- QQ授权登陆常用</li>
+</ul>
+<p>已上几种方法，大家可以很轻松google到相关信息，本篇就不赘述了。已上就是我理解的前端权限~</p>
+</li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#what">WHAT</a></li>
+<li><a href="#why">WHY</a></li>
+<li><a href="#how">HOW</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/202009141648/">
+              <h3 class="post-title">
+                BFC与IFC
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

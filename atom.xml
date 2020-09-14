@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2020-09-14T08:01:09.695Z</updated>
+    <updated>2020-09-14T09:03:25.048Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -11,9 +11,946 @@
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 北落师门</rights>
     <entry>
+        <title type="html"><![CDATA[Flex布局]]></title>
+        <id>https://yuqiusuo.github.io/post/flex/</id>
+        <link href="https://yuqiusuo.github.io/post/flex/">
+        </link>
+        <updated>2020-09-14T09:02:07.000Z</updated>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="http://file.yuqiusuo.top/img/20200610113312.png" alt="Flex" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS面向对象-继承]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141653/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141653/">
+        </link>
+        <updated>2020-09-14T08:52:30.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第三篇「继承」回顾的笔记</p>
+</blockquote>
+<h2 id="原型链">原型链</h2>
+<ol>
+<li>
+<p>备注</p>
+<ul>
+<li>实现继承的主要方式</li>
+<li>利用原型让一个引用继承类型继承另一个引用类型的属性和方法</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function SuperType() {
+  this.property = true;
+}
+
+SuperType.prototype.getSuperValue = function() {
+  return this.propety;
+}
+
+function SubType() {
+  this.subproperty = false;
+}
+
+SubType.prototype = new SuperType();
+
+SubType.prototype.getSubValue = function() {
+  return this.subproperty
+}
+
+</code></pre>
+</li>
+</ol>
+<p>var instance = new SubType();<br>
+alert(instance.getSuperValue()); // true</p>
+<pre><code>   
+   
+   
+
+## 借用构造函数
+
+1. 基本思想
+
+   * 在子类型构造函数内部调用超类型构造函数
+
+2. 示例
+
+   ```javascript
+   function SuperType() {
+     this.colors = ['red', 'blue', 'green']
+   }
+   
+   function SubType() {
+     // 继承SuperType
+     SuperType.call(this);
+   }
+   
+   var instance = new SubType();
+   instance.colors.push('black');
+   alert(instance.colors); // &quot;red, blur, green, black&quot;
+</code></pre>
+<h2 id="组合继承">组合继承</h2>
+<ol>
+<li>
+<p>概念</p>
+<ul>
+<li>指的是将原型链和借用构造函数的技术组合到一块，发挥二者之长</li>
+</ul>
+</li>
+<li>
+<p>思路</p>
+<ul>
+<li>使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function SuperType(name) {
+  this.name = name;
+  this.colors = ['red', 'blue', 'green']
+}
+
+SuperType.prototype.sayName = function() {
+  alert(this.name);
+}
+
+function SubType(name, age) {
+  // 继承属性
+  SuperType.call(this, name);
+  
+  this.age = age;
+}
+
+// 继承方法
+SubType.prototype = new SuperType();
+Subtype.prototype.constructor = SubType;
+Subtype.prototype.sayAge = function() {
+  alert(this.age);
+};
+
+var instance = new SubType('Matthew', 27);
+instance.colors.push('black');
+alert(instance.colors); // red, blue, green, black
+instance.sayName(); // Matthew
+instance.sayAge(); // 27
+</code></pre>
+</li>
+</ol>
+<h2 id="原型式继承">原型式继承</h2>
+<ol>
+<li>
+<p>备注</p>
+<ul>
+<li>没有严格意义上的构造函数</li>
+<li>基于已有的对象创建对象，同时不必因此创建自定义类型</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function object(o) {
+  function F() {};
+  F.prototype = o;
+  return new F();
+}
+
+var person = {
+  name: 'Matthew',
+  friends: ['Wudan', 'Sanmao', 'MaP']
+};
+
+var anotherPerson = object(person);
+anotherPerson.name = 'BLSM';
+anotherPerson.friends.push('YQS');
+
+alert(person.friends); // 'Wudan', 'Sanmao', 'MaP', 'YQS'
+</code></pre>
+</li>
+</ol>
+<h2 id="寄生式继承">寄生式继承</h2>
+<ol>
+<li>
+<p>备注</p>
+<ul>
+<li>创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后再像真的是它做了所有工作一样返回对象</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function object(o) {
+  function F() {};
+  F.prototype = o;
+  return new F();
+}
+
+function createAnother(original) {
+  var clone = object(original);
+  clone.sayHi = function() {
+    alert('hi');
+  }
+  return clone;
+}
+
+var person = {
+  name: 'Matthew',
+  friends: ['Wudan', 'Sanmao', 'MaP']
+};
+
+var anotherPerson = createAnother(person);
+anotherPerson.sayHi(); // hi
+</code></pre>
+</li>
+</ol>
+<h2 id="寄生组合式继承">寄生组合式继承</h2>
+<ol>
+<li>
+<p>备注</p>
+<ul>
+<li>借用构造函数来继承属性，通过原型链的混成形式来继承方法</li>
+<li>不必为了指定子类型的原型而调用超类型的构造函数，我们所需要的无非是超类型原型的一个副本而已</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function inheritPrototype(subType, superType) {
+  var prototype = Object(superType.prototype);
+  prototype.constructor = subType;
+  subType.prototype = prototype;
+}
+
+function SuperType(name) {
+  this.name = name;
+  this.colors = ['red', 'blue', 'green'];
+}
+
+SuperType.prototype.sayName = function() {
+  alert(this.name);
+}
+
+function SubType(name, age) {
+  SuperType.call(this, name);
+  this.age = age;
+}
+
+inheritPrototype(SubType, SuperType);
+
+SubTyper.prototype.sayAge = function() {
+  alert(this.age);
+}
+</code></pre>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS面向对象-创建对象]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141652/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141652/">
+        </link>
+        <updated>2020-09-14T08:51:49.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第二篇「创建对象」回顾的笔记</p>
+</blockquote>
+<h2 id="工厂模式">工厂模式</h2>
+<ol>
+<li>
+<p>根据所接受的参数构建一个包含所有必要信息的对象。</p>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function createPerson(name, age, job) {
+  var o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  o.sayName = function() {
+    alert(this.name);
+  }
+  return o;
+}
+
+var person = createPerson('Matthew', 27, 'Software Engineer');
+</code></pre>
+</li>
+</ol>
+<h2 id="构造函数模式">构造函数模式</h2>
+<ol>
+<li>
+<p>特点：</p>
+<ul>
+<li>没有显式地创建对象</li>
+<li>直接将属性和方法赋给this对象</li>
+<li>没有return语句</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function Person(name, age, obj) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = function() {
+    alert(this.name);
+  }
+}
+
+var person = new Person('Matthew', 27, 'Software Engineer')
+</code></pre>
+</li>
+<li>
+<p>问题：</p>
+<ul>
+<li>每个方法都要在每个示例上重新创建一遍</li>
+<li>会导致不同的作用域链和标识符解析</li>
+</ul>
+</li>
+</ol>
+<h2 id="原型模式">原型模式</h2>
+<ol>
+<li>
+<p>好处：</p>
+<ul>
+<li>可以让所有对象实例共享它所包含的属性和方法</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function Person(){}
+Person.prototype.name = 'Matthew';
+Person.prototype.age = 29;
+Person.prototype.job = 'Software Engineer';
+Person.prototype.sayName = function() {
+  alert(this.name);
+}
+
+var person = new Person();
+person.sayName();
+
+// 另一种
+function Person(){}
+Person.prototype = {
+  name: 'Matthew',
+  age: 27,
+  job: 'Software Engineer',
+  sayName: function() {
+    alert(this.name);
+  }
+}
+</code></pre>
+</li>
+<li>
+<p>问题：</p>
+<ul>
+<li>不方便</li>
+<li>所有的属性都是共享的，不能隐藏属性</li>
+</ul>
+</li>
+</ol>
+<h2 id="组合使用构造函数模式和原型模式">组合使用构造函数模式和原型模式</h2>
+<ol>
+<li>
+<p>特点：</p>
+<ul>
+<li>最常见的方式</li>
+<li>每个实例都会有自己的一份实例属性的副本，同时又共享着对方法的引用，最大限度节省内存</li>
+<li>支持构造函数传递参数</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function Person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+}
+
+Person.prototype = {
+  constructor: Person,
+  sayName: function() {
+    alert(this.name);
+  }
+}
+
+var person = new Person('Matthew', 27, 'Software Engineer');
+</code></pre>
+</li>
+</ol>
+<h2 id="动态原型模式">动态原型模式</h2>
+<ol>
+<li>
+<p>特点：</p>
+<ul>
+<li>把所有信息封装在构造函数中，通过在构造函数中初始化原型，又保持了同时使用构造函数和原型的有点</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function Person(name, age, job) {
+	// 属性  
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  
+  // 方法
+  if(typeof this.sayName != 'function') {
+    Person.prototype.sayName = function() {
+      alert(this.name);
+    }
+  }
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="寄生构造函数模式">寄生构造函数模式</h2>
+<ol>
+<li>
+<p>基本思想</p>
+<ul>
+<li>创建一个函数，作用仅仅是封装创建对象的代码</li>
+<li>再返回新创建的对象</li>
+</ul>
+</li>
+<li>
+<p>示例</p>
+<pre><code class="language-javascript">function Person(name, age, job) {
+  var o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  o.sayName = function() {
+    alert(this.name);
+  }
+  return o;
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="稳妥构造函数模式">稳妥构造函数模式</h2>
+<ol>
+<li>
+<p>特点：</p>
+<ul>
+<li>
+<p>没有公共属性</p>
+</li>
+<li>
+<p>适合在一些安全的环境中，或者在防止数据被其他应用程序改动时使用</p>
+</li>
+</ul>
+</li>
+<li>
+<p>示例：</p>
+<pre><code class="language-javascript">function Person(name, age, job) {
+  var o = new Object();
+  o.sayName = function() {
+    alert(name);
+  }
+  return o;
+}
+</code></pre>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JS面向对象-理解对象]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141651/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141651/">
+        </link>
+        <updated>2020-09-14T08:50:29.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第一篇「理解对象」回顾的笔记</p>
+</blockquote>
+<h2 id="属性类型">属性类型</h2>
+<h3 id="数据属性">数据属性</h3>
+<p>数据属性包含一个数据值的位置，在这个位置可以读取和 写入值。它有4个特性：</p>
+<ul>
+<li><code>[[Configureble]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>delete</code>删除属性</li>
+<li>表示能否修改属性的特性</li>
+<li>表示能否把属性修改为访问器属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Enumerable]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>for-in</code>循环返回属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Writable]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否修改属性的值</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>[[Value]]</code>
+<ul>
+<li>作用
+<ul>
+<li>表示能否修改属性的值</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>undefined</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如要修改属性默认的特性，需要使用<strong>ES5</strong>的<code>defineProperty()</code>方法，它接收3个参数：</p>
+<ul>
+<li>属性所在的对象</li>
+<li>属性的名字</li>
+<li>一个描述符对象
+<ul>
+<li>configurable</li>
+<li>enumerable</li>
+<li>writable</li>
+<li>value</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">// writable 控制数据是否只读
+var person = {};
+Object.defineProperty(person, 'name', {
+  writable: false,
+  value: 'Nicholas'
+});
+console.log(person.name); // Nicholas
+person.name = 'Greg'；
+console.log(person.name); // Nicholas
+
+// configurable设置为false后就不能再修改
+var person = {};
+Object.defineProperty(person, 'name', {
+  configurable: false,
+  value: 'Nicholas'
+});
+
+var person = {};
+Object.defineProperty(person, 'name', {
+  configurable: true,
+  value: 'Nicholas'
+}); // 报错
+</code></pre>
+<h3 id="访问器属性">访问器属性</h3>
+<p>访问器属性不包含数据值；它们包含一对<code>getter</code>和<code>setter</code>函数。读取时调用<code>getter</code>，写入时调用<code>setter</code>。访问器属性有4个特性：</p>
+<ul>
+<li>
+<p><code>[[Configureble]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>delete</code>删除属性</li>
+<li>表示能否修改属性的特性</li>
+<li>表示能否把属性修改为访问器属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Enumerable]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>表示能否通过<code>for-in</code>循环返回属性</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li><code>true</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Set]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>在读取属性时调用的函数</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li>undefined</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>[[Get]]</code></p>
+<ul>
+<li>作用
+<ul>
+<li>在写入属性时调用的函数</li>
+</ul>
+</li>
+<li>默认值
+<ul>
+<li>undefined</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">var book = {
+  _year: 2004,
+  edition: 1
+};
+Object.defineProperty(book, 'year', {
+  get: function() {
+    return this._year;
+  },
+  set: function(newValue) {
+    if(newValue &gt; 2004) {
+      this._year = newValue;
+      this.edition += newValue - 2004;
+    }
+  }
+});
+
+book.year = 2005;
+console.log(book.edition); // 12
+</code></pre>
+<h2 id="定义多个属性">定义多个属性</h2>
+<p>可以使用<code>Object.defineProperties</code>。示例：</p>
+<pre><code class="language-javascript">var book = {};
+Object.defineProperties(book, {
+  _year: {
+    value: 2004
+  },
+  edition: {
+		value: 1
+  },
+  year: {
+    get: function() {
+      return this._year;
+    },
+    set: function() {
+      if(newValue &gt; 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+      }
+    }
+  }
+});
+</code></pre>
+<h2 id="读取属性的特性">读取属性的特性</h2>
+<p>使用<code>Object.getOwnPropertyDescriptor()</code>，可以取得给制定属性的描述符。</p>
+<p>接收参数：</p>
+<ul>
+<li>属性所在对象</li>
+<li>要读取其描述符的属性名称</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>属性对象</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-javascript">var book = {};
+Object.defineProperties(book, {
+  _year: {
+    value: 2004
+  },
+  edition: {
+		value: 1
+  },
+  year: {
+    get: function() {
+      return this._year;
+    },
+    set: function() {
+      if(newValue &gt; 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+      }
+    }
+  }
+});
+
+var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
+console.log(descriptor.value); // 2004
+console.log(descriptor.configurable); // false
+console.log(typeof descriptor.get); // undefined
+
+var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
+console.log(descriptor.value); // undefined
+console.log(descriptor.enumerable); // false
+console.log(typeof descriptor.get); // &quot;function&quot;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[浏览器的回流(重排)与重绘 ]]></title>
+        <id>https://yuqiusuo.github.io/post/liu-lan-qi-de-hui-liu-chong-pai-yu-chong-hui/</id>
+        <link href="https://yuqiusuo.github.io/post/liu-lan-qi-de-hui-liu-chong-pai-yu-chong-hui/">
+        </link>
+        <updated>2020-09-14T08:49:40.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>我们经常说到浏览器的性能问题，其实与浏览器性能息息相关的一点就是浏览器如何渲染我们的网页，这个时候我们就会涉及到一个概念，那就是浏览器的回流(重排，以下统称回流，Reflow)与重绘(Repaint)。</p>
+</blockquote>
+<h3 id="回流">回流</h3>
+<p>对回流这个词，我的理解是<strong>回炉重造</strong>，即对于整个网页重新渲染一遍。那我们可以思考一下，从性能角度来讲，如果我们来写浏览器的代码，一定是再必须要重新渲染网页的时候再重新渲染，那就推出一个问题，什么时候浏览器必须要重新渲染网页？</p>
+<p>其实必定是当网页的元素坐标发生变化的时候，这里我们可以理解为有很多人在排队，大家仅仅的依靠在一起，那什么时候大家需要都挪动下位置呢？我觉得要么就是一个人或者几个人突然变胖了/瘦了，那大家如果想要继续依靠在一起，就得都动一动；或者其中一个人或者几个人挪动了一下自己的位置，他势必也会挤着其他人去动一动位置。这种<strong>重新渲染全部或部分文档的动作</strong>我们就叫做<strong>回流</strong>，因为大家都需要挪动下位置，也就导致我们这个网页需要回炉重造了。</p>
+<p>所以会导致回流的操作(包括但不限于)：</p>
+<ul>
+<li>页面首次渲染</li>
+<li>浏览器窗口大小发生改变</li>
+<li>元素尺寸或位置发生改变</li>
+<li>元素内容变化（文字数量或图片大小等等）</li>
+<li>元素字体大小变化</li>
+<li>添加或者删除<strong>可见</strong>的<code>DOM</code>元素</li>
+<li>激活<code>CSS</code>伪类（例如：<code>:hover</code>）</li>
+</ul>
+<h4 id="重绘">重绘</h4>
+<p>还是拿排队举例，当队伍中的一个人需要换一件衣服，比如他从穿黄衣服换成穿红色的衣服，这个时候只要这一个人换件衣服就行了，对其他人并没有影响，这种情况我们就叫做重绘。浏览器只需要对该元素进行重新绘制即可。</p>
+<p>所以会导致回流的操作(包括但不限于)：</p>
+<ul>
+<li>修改color/background-color/visibility</li>
+</ul>
+<p>由上述可见，其实回流对浏览器性能的消耗是高于重绘的，而且回流的操作一定会伴随着重绘，重绘却不一定伴随回流。那现代浏览器其实对这块是有进行优化处理的，如果我们的队伍总是需要变换位置，我们就统一来一次大排队。</p>
+<p>那么我们在平时的工作中，如果针对于回流和重绘写出性能更好地代码呢？有以下几点可以注意的：</p>
+<h5 id="css">CSS</h5>
+<ul>
+<li>避免使用<code>table</code>布局。</li>
+<li>尽可能在<code>DOM</code>树的最末端改变<code>class</code>。</li>
+<li>避免设置多层内联样式。</li>
+<li>将动画效果应用到<code>position</code>属性为<code>absolute</code>或<code>fixed</code>的元素上。</li>
+<li>避免使用<code>CSS</code>表达式（例如：<code>calc()</code>）。</li>
+</ul>
+<h5 id="javascript">JavaScript</h5>
+<ul>
+<li>避免频繁操作样式，最好一次性重写<code>style</code>属性，或者将样式列表定义为<code>class</code>并一次性更改<code>class</code>属性。</li>
+<li>避免频繁操作<code>DOM</code>，创建一个<code>documentFragment</code>，在它上面应用所有<code>DOM操作</code>，最后再把它添加到文档中。</li>
+<li>也可以先为元素设置<code>display: none</code>，操作结束后再把它显示出来。因为在<code>display</code>属性为<code>none</code>的元素上进行的<code>DOM</code>操作不会引发回流和重绘。</li>
+<li>避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。</li>
+<li>对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。</li>
+</ul>
+<p>参考 <a href="https://juejin.im/post/5a9923e9518825558251c96a">浏览器的回流与重绘 (Reflow &amp; Repaint)</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[谈前端权限]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141649/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141649/">
+        </link>
+        <updated>2020-09-14T08:48:46.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>自从有了前后端分离，前端的工作内容就变得越发多起来，其中有一项就是权限控制，下面就谈一谈前端权限。</p>
+</blockquote>
+<h4 id="what">WHAT</h4>
+<p>首先我们要理清前端权限是什么，我理解的前端权限就是<strong>控制前端元素是否可见</strong>。因为之前后台模板时代，我们的页面都是通过后台来渲染的，能不能访问到页面直接由后台逻辑判断就好。但是现在我们到了前后端分离时代，所有页面的元素都由页面本身来控制，所以页面路由这块需要由前端本身来控制了。所以我认为前端权限有这几个关键点：</p>
+<ul>
+<li>前端权限是基于前后端分离之上的</li>
+<li>前端只能做视觉上的控制</li>
+<li>权限控制不能放在前端，后台还是需要对每一个接口做验权</li>
+</ul>
+<h4 id="why">WHY</h4>
+<p>下面我们说一说为什么说<strong>前端只能做视觉上的控制</strong>和<strong>权限控制不能放在前端，后台还是需要对每一个接口做验权</strong>。我觉得其实WEB本身就是围绕数据来的，所以我们前端安全，主要是保护我们的<strong>数据</strong>，那和数据最紧密接触的其实还是后台，前端本身做得是<strong>数据的展示和收集</strong>，但是数据的存储和处理并不是由前端来做。所以即使前端能控制住路由/按钮等不被别人看到，发送请求的方式还是有很多，完全可以绕过前端来请求数据。所以从某种意义上来说，就算前端的权限控制做得再严密，可能作用也是有限的。这也引申了后面一句，后台还是要对每一个接口做验权。</p>
+<h4 id="how">HOW</h4>
+<p>但是前端做权限控制还是非常有意义的，我觉得在安全性方面来说，前端就显示人体的皮肤，我们会是WEB安全的第一道防线。前端要做的工作，我认为有三种：</p>
+<ul>
+<li>前端路由展示</li>
+<li>前端按钮级别展示</li>
+<li>调用接口与后台配合</li>
+</ul>
+<ol>
+<li>
+<p>首先，我们所以说前端路由展示。这里其实可以分为两种方式来做路由权限控制：</p>
+<ul>
+<li>前端保存所有路由，通过请求获取权限列表，然后由前端筛选出来可访问路由进行展示</li>
+<li>前端仅保存文件关系，由后台根据user信息生成路由，通过请求传递到前端渲染</li>
+</ul>
+<p>第一种方法比较方便，后一种更灵活，比如我们的页面需要通过后台配置访问，就可以通过第二种方法来实现。</p>
+</li>
+<li>
+<p>按钮级别的展示（Vue示例）</p>
+<ul>
+<li>先通过请求获取到按钮级别的权限列表</li>
+<li>封装一个公用的筛选方法，再通过v-if调用该方法确定是否渲染 <strong>OR</strong> 封装一个指令（directive）来控制按钮是否渲染</li>
+</ul>
+</li>
+<li>
+<p>调用接口与后台配合</p>
+<p>其实我们最主要的与后台沟通的方式还是通过调用接口，与后台进行数据交流，但是如上所说，后台还是需要对每一个接口进行鉴权。前后端配合主要有以下几种方式：</p>
+<ul>
+<li>HTTP Basic Authentication</li>
+<li>session-Cookie   <strong>常用</strong></li>
+<li>Token-Cookie    <strong>常用</strong></li>
+<li>OAuth(开放授权) -- QQ授权登陆常用</li>
+</ul>
+<p>已上几种方法，大家可以很轻松google到相关信息，本篇就不赘述了。已上就是我理解的前端权限~</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BFC与IFC]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141648/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141648/">
+        </link>
+        <updated>2020-09-14T08:47:39.000Z</updated>
+        <content type="html"><![CDATA[<p>##格式化上下文</p>
+<blockquote>
+<p>格式化上下文（Formatting Context）是Web页面的可视化CSS渲染的根据，细分为IFC、BFC、FFC和GFC。关键在于能用它们做什么。</p>
+</blockquote>
+<p>网页的显示页面中，每一部分都是格式化上下文的一部分。在页面的渲染中，有着各种各样独立的区域，他们就像每个国家都有自己的制度，通过这些制度来确立国家的运行机制。最终由这些国家来组成我们多姿多彩的世界。</p>
+<figure data-type="image" tabindex="1"><img src="http://q3bv8d9ot.bkt.clouddn.com/img/20200113215358.png" alt="多种格式化上下文组成页面的渲染模式" loading="lazy"></figure>
+<h2 id="bfcblock-formatting-contexts">BFC（Block formatting contexts）</h2>
+<p>BFC又称「块格式化上下文」，我们能在各大面试试题中见到它。MDN中对它的解释有一句：「参与BFC的元素使用CSS框模型概述的规则，该模型定义了元素的边距、边框和填充如何与同一上下文中的其他块交互」。简而言之，<strong>BFC是一个独立的区域，它内部的元素都依照它的规则渲染，并且不会与BFC外部打交道</strong>。</p>
+<p>所以我们能用BFC做什么呢？通常是以下几点：</p>
+<ol>
+<li>清除元素内部的浮动效果</li>
+<li>防止垂直的margin重叠</li>
+<li>防止margin溢出</li>
+<li>左边定宽，右边自适应布局（反之亦可）</li>
+</ol>
+<p>那么哪些方式会生成BFC元素呢？以下：</p>
+<ol>
+<li>浮动元素 <code>float: left;/float: right;</code></li>
+<li>绝对定位的元素 <code>position: absolute;/position: fixed;/position: sticky;</code></li>
+<li><code>display: inline-block;</code>的元素</li>
+<li>table标签内每一格，或者<code>display: table-*;</code>的元素</li>
+<li><code>overflow</code>不为 visible 的元素</li>
+<li><code>display: flow-root</code> 或者 <code>display: flow-root list-item</code> 的元素</li>
+<li><code>contain: layout/content/strict</code>的元素</li>
+<li><code>display: flex/inline-flex/grid/inline-grid</code> 的元素</li>
+<li><code>column-span: all</code> 的元素</li>
+</ol>
+<h2 id="ifcinline-formatting-contexts">IFC（Inline formatting contexts）</h2>
+<p>IFC又称「行内格式化上下文」。「其存在于其他格式上下文中，可以将其视为段落的上下文」。用法有以下几种：</p>
+<ol>
+<li>内联元素水平居中</li>
+<li>内联元素垂直居中</li>
+<li>段落展示</li>
+</ol>
+<h2 id="其他">其他</h2>
+<ul>
+<li>FFC（Flex formatting contexts）：<code>display: flex;</code>的元素，我们常说的弹性布局</li>
+<li>GFC（GrideLayout  formatting contexts）：<code>display: grid</code>的元素，网格布局</li>
+</ul>
+<hr>
+<h4 id="引用">引用</h4>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts">格式化上下文简介</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[vue打包兼容IE11]]></title>
+        <id>https://yuqiusuo.github.io/post/202009141646/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141646/">
+        </link>
+        <updated>2020-09-14T08:45:11.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>
+<p>确保安装过<code>babel-loader</code>和<code>babel-polyfill</code></p>
+<pre><code class="language-javascript">cnpm i babel-loader babel-polyfill -D
+</code></pre>
+</li>
+<li>
+<p>将webpack配置文件修改为</p>
+<pre><code class="language-javascript">entry: {
+    app:['babel-polyfill', './src/main.js']
+}
+</code></pre>
+<pre><code class="language-javascript">{
+    test: /\.js$/,
+    loader: 'babel-loader?cacheDirectory',
+    include: [
+        resolve('src'),
+        resolve('test'),
+        resolve('node_modules/_element-ui@2.4.7@element-ui/src'),
+        resolve('node_modules/_element-ui@2.4.7@element-ui/package')
+    ]
+}
+
+// 上述element-ui文件目录以本地 node_modules 中 element-ui 文件夹名称为准
+</code></pre>
+</li>
+<li>
+<p>重新打包即可</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[态度]]></title>
+        <id>https://yuqiusuo.github.io/post/taidu/</id>
+        <link href="https://yuqiusuo.github.io/post/taidu/">
+        </link>
+        <updated>2020-09-14T08:41:56.000Z</updated>
+        <content type="html"><![CDATA[<p>今天读了吴军的「态度」一书，这本书是吴军写给他的两个女儿的信件的合集，其间表达了吴军对于学习、生活和工作等方面的看法与见解。其中有很多的观点说的很好，我也希望能应用到我未来的学习、工作与生活中。</p>
+<p>「态度」一书分为6大章节，分别是「人生哲学」、「洞察世界」、「对待金钱」、「人际关系」、「有效学习」以及「做人做事」。每一章节都有几封信件，是吴军向女儿表述自己对待一些问题的看法，引导她们或者与她们讨论。</p>
+<p>就我个人而言，我觉得我的认知有几点：</p>
+<ul>
+<li>多做些精益求精的事情</li>
+<li>交流与合作</li>
+<li>持续学习</li>
+</ul>
+<p>虽然「格局」与「见识」两个词贯穿全书，但是给我一种摸不着头脑的感觉。上述三种感觉是我读完本书后的真切感受。</p>
+<h4 id="多做些精益求精的事情">多做些精益求精的事情</h4>
+<p>这句话有三层意思：</p>
+<ul>
+<li>做高价值/优先级高的事情</li>
+<li>做好你正在做的事情</li>
+<li>突破自己</li>
+</ul>
+<p>我们平时在工作生活中，做事情的习惯很多都是一把抓，看到眼里的都做了，或者只挑简单的事情去做。这样我们能不断地享受<strong>完成任务</strong>的反馈，自我感觉良好。可是我们很多时候做的事情都是低价值的，或者说低优先级的。有很多事情，我们是可以选择不做的，及时不做，影响也不会大。我们应该在自己做的事情之中挑出那些<strong>价值高的</strong>、<strong>优先级高</strong>的事情来做。这样更有助于我们在工作学习中的成长。</p>
+<p>与此同时，我们在做事情的时候，要多注意这件事情的细节。<strong>做好一件事情的每个细节，这件事情也就不会做的多差</strong>。其实这也是在说在做事情的时候，我们多去想一想这件事情，<strong>专注</strong>的力量很强大，不要凭借着自己做事情的惯性去做事情，与思考作伴，做好正在做的事情。</p>
+<p>第三点是突破自己，尤其在工作中，做事情总会挑做的多的事情来做，顺手就来，顺手就做好了，久而久之，就在舒适圈中徘徊。我们应该多把时间用在做能够自我突破的事情上，<strong>多去体验，多去总结，多去提高</strong>。在成长的路上走得远一些，看的风景多一些，回过头去能看到一步一个阶梯在往上走。</p>
+<p>多做些精益求精的事情，人是要给自己的成就感的，不管是成长还是回顾，都让自己能有所回味。</p>
+<h4 id="交流与合作">交流与合作</h4>
+<p>程序员做久了，总会有些固化思维，比如什么事情都想自己亲手去做，虽然未必自己会做的更好，但是总觉得自己做会放心些，这就是缺乏交流与合作的态度。在学习和工作过程中，交流与合作实在都是非常重要的事情，工作中绝大部分事情，靠一个人去做都不会做好。工作中注重交流与合作也有很多的好处：</p>
+<ul>
+<li>把事情做得更好</li>
+<li>向周围的人互相学习</li>
+<li>锻炼领导力</li>
+</ul>
+<p>首先是「更好」一词，这里没有用最好，因为我们每经过一段时间的成长，对待事情的看法都会不一样，对于「好」的认知也都会不同。但是我们可以随着自己的成长，与身边的人一起，把大家一起做的事情，每一次都做得更好一些，这样不断地锻炼与成长。收获的是合作的经验与做事的方法，合作才是工作的本质。</p>
+<p>在我们的工作生活中，我们也总会遇到很多优秀的同事与朋友，在大家的交流合作的过程中，了解别人的观点、做事情的方法，同时将自己的经验予以分享。与优秀的人一起合作交流，大家会互相提升，提高自己的能力与见识，最终是多做一些对社会有益的事情。</p>
+<p>最后，合作是大家一起把一件事情做好，领导者所要做的，是将事情或者困难分解成小模块，之后大家各司其职，将事情做好，或将困难克服。如果有机会，我们应该争取去做领导者的角色，锻炼我们分解任务的能力，以及分解之后与大家的沟通能力，引导大家将目标完成。</p>
+<h4 id="持续学习">持续学习</h4>
+<p>持续学习就不需要过多的表述了，很多人在30岁之后就停止成长了，希望自己能够把持续学习记在心上，实践在行动上。这让我想到我的父亲，在50岁之后学习财务，成为一家公司的财务总监，这种持续学习的态度和能力，都会是我终身的榜样。</p>
+<p>「态度」一书中还提到了很多的观点值得我学习，可是我们总是爱做思考、做规划，才发现要学习的事情太多了，总会让人望而却步。希望自己能够秉承着「脚踏实地」的态度，持续学习、持续成长，最终能多做一些对社会有益的事情。</p>
+<figure data-type="image" tabindex="1"><img src="http://file.yuqiusuo.top/img/20200914164405.png" alt="态度 xmind" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[事件循环以及浏览器渲染时机]]></title>
-        <id>https://yuqiusuo.github.io/post/shi-jian-xun-huan-yi-ji-liu-lan-qi-xuan-ran-shi-ji/</id>
-        <link href="https://yuqiusuo.github.io/post/shi-jian-xun-huan-yi-ji-liu-lan-qi-xuan-ran-shi-ji/">
+        <id>https://yuqiusuo.github.io/post/202009141500/</id>
+        <link href="https://yuqiusuo.github.io/post/202009141500/">
         </link>
         <updated>2020-09-14T07:20:04.000Z</updated>
         <content type="html"><![CDATA[<h2 id="事件循环机制event-loop">事件循环机制（Event Loop）</h2>

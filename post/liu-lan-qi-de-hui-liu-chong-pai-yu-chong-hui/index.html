@@ -1,0 +1,233 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>浏览器的回流(重排)与重绘  | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1600074203206">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="浏览器的回流(重排)与重绘  | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+我们经常说到浏览器的性能问题，其实与浏览器性能息息相关的一点就是浏览器如何渲染我们的网页，这个时候我们就会涉及到一个概念，那就是浏览器的回流(重排，以下统称回流，Reflow)与重绘(Repaint)。
+
+回流
+对回流这个词，我的理解是回..." />
+    <meta name="keywords" content="前端" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1600074203206" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/guan-yu" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              浏览器的回流(重排)与重绘 
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-09-14
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<p>我们经常说到浏览器的性能问题，其实与浏览器性能息息相关的一点就是浏览器如何渲染我们的网页，这个时候我们就会涉及到一个概念，那就是浏览器的回流(重排，以下统称回流，Reflow)与重绘(Repaint)。</p>
+</blockquote>
+<h3 id="回流">回流</h3>
+<p>对回流这个词，我的理解是<strong>回炉重造</strong>，即对于整个网页重新渲染一遍。那我们可以思考一下，从性能角度来讲，如果我们来写浏览器的代码，一定是再必须要重新渲染网页的时候再重新渲染，那就推出一个问题，什么时候浏览器必须要重新渲染网页？</p>
+<p>其实必定是当网页的元素坐标发生变化的时候，这里我们可以理解为有很多人在排队，大家仅仅的依靠在一起，那什么时候大家需要都挪动下位置呢？我觉得要么就是一个人或者几个人突然变胖了/瘦了，那大家如果想要继续依靠在一起，就得都动一动；或者其中一个人或者几个人挪动了一下自己的位置，他势必也会挤着其他人去动一动位置。这种<strong>重新渲染全部或部分文档的动作</strong>我们就叫做<strong>回流</strong>，因为大家都需要挪动下位置，也就导致我们这个网页需要回炉重造了。</p>
+<p>所以会导致回流的操作(包括但不限于)：</p>
+<ul>
+<li>页面首次渲染</li>
+<li>浏览器窗口大小发生改变</li>
+<li>元素尺寸或位置发生改变</li>
+<li>元素内容变化（文字数量或图片大小等等）</li>
+<li>元素字体大小变化</li>
+<li>添加或者删除<strong>可见</strong>的<code>DOM</code>元素</li>
+<li>激活<code>CSS</code>伪类（例如：<code>:hover</code>）</li>
+</ul>
+<h4 id="重绘">重绘</h4>
+<p>还是拿排队举例，当队伍中的一个人需要换一件衣服，比如他从穿黄衣服换成穿红色的衣服，这个时候只要这一个人换件衣服就行了，对其他人并没有影响，这种情况我们就叫做重绘。浏览器只需要对该元素进行重新绘制即可。</p>
+<p>所以会导致回流的操作(包括但不限于)：</p>
+<ul>
+<li>修改color/background-color/visibility</li>
+</ul>
+<p>由上述可见，其实回流对浏览器性能的消耗是高于重绘的，而且回流的操作一定会伴随着重绘，重绘却不一定伴随回流。那现代浏览器其实对这块是有进行优化处理的，如果我们的队伍总是需要变换位置，我们就统一来一次大排队。</p>
+<p>那么我们在平时的工作中，如果针对于回流和重绘写出性能更好地代码呢？有以下几点可以注意的：</p>
+<h5 id="css">CSS</h5>
+<ul>
+<li>避免使用<code>table</code>布局。</li>
+<li>尽可能在<code>DOM</code>树的最末端改变<code>class</code>。</li>
+<li>避免设置多层内联样式。</li>
+<li>将动画效果应用到<code>position</code>属性为<code>absolute</code>或<code>fixed</code>的元素上。</li>
+<li>避免使用<code>CSS</code>表达式（例如：<code>calc()</code>）。</li>
+</ul>
+<h5 id="javascript">JavaScript</h5>
+<ul>
+<li>避免频繁操作样式，最好一次性重写<code>style</code>属性，或者将样式列表定义为<code>class</code>并一次性更改<code>class</code>属性。</li>
+<li>避免频繁操作<code>DOM</code>，创建一个<code>documentFragment</code>，在它上面应用所有<code>DOM操作</code>，最后再把它添加到文档中。</li>
+<li>也可以先为元素设置<code>display: none</code>，操作结束后再把它显示出来。因为在<code>display</code>属性为<code>none</code>的元素上进行的<code>DOM</code>操作不会引发回流和重绘。</li>
+<li>避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。</li>
+<li>对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。</li>
+</ul>
+<p>参考 <a href="https://juejin.im/post/5a9923e9518825558251c96a">浏览器的回流与重绘 (Reflow &amp; Repaint)</a></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%9B%9E%E6%B5%81">回流</a>
+<ul>
+<li><a href="#%E9%87%8D%E7%BB%98">重绘</a>
+<ul>
+<li><a href="#css">CSS</a></li>
+<li><a href="#javascript">JavaScript</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/202009141649/">
+              <h3 class="post-title">
+                谈前端权限
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
