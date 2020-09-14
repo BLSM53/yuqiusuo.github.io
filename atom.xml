@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://yuqiusuo.github.io</id>
+    <title>Gridea</title>
+    <updated>2020-09-14T07:25:36.848Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://yuqiusuo.github.io"/>
+    <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://yuqiusuo.github.io/images/avatar.png</logo>
+    <icon>https://yuqiusuo.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[事件循环以及浏览器渲染时机]]></title>
+        <id>https://yuqiusuo.github.io/post/shi-jian-xun-huan-yi-ji-liu-lan-qi-xuan-ran-shi-ji/</id>
+        <link href="https://yuqiusuo.github.io/post/shi-jian-xun-huan-yi-ji-liu-lan-qi-xuan-ran-shi-ji/">
+        </link>
+        <updated>2020-09-14T07:20:04.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="事件循环机制event-loop">事件循环机制（Event Loop）</h2>
+<p>我们知道JS是单线程的，这意味着在同一时刻，JS只会处理一件事情，但是我们在平时写前端代码时，总会杂糅着进行「处理事件」、「执行AJAX请求」、「调用API」等各种事情，这就依靠事件循环机制（Event Loop）来处理。主要的进行步骤，能查到的资料有很多，总结就是以下几步：</p>
+<ol>
+<li>从<strong>事件队列</strong>中取出一项「宏任务」进行处理；</li>
+<li>检查「微任务」队列中是否有需要处理的「微任务」
+<ul>
+<li>如果有「微任务」，逐一处理</li>
+<li>在此期间产生的「微任务」，放入「微任务队列」末尾</li>
+</ul>
+</li>
+<li>执行 UI 渲染
+<ul>
+<li>判断是否需要渲染
+<ul>
+<li>渲染只保证浏览器60Hz的刷新频率</li>
+<li>并非每次循环都会触发渲染</li>
+<li>触发<code>resize</code>、<code>scroll</code>等事件</li>
+<li>执行css动画</li>
+<li>等等</li>
+</ul>
+</li>
+<li>执行<code>requestAnimationFrame</code></li>
+<li>执行<code>IntersectionObserver callback</code></li>
+<li>渲染UI</li>
+</ul>
+</li>
+<li>如果「宏任务队列」为空，休眠直到一个「宏任务」出现</li>
+<li>回到第一步</li>
+</ol>
+<h2 id="宏任务及微任务">宏任务及微任务</h2>
+<p>哪些事件会触发「宏任务」及「微任务」呢？见下图：</p>
+<figure data-type="image" tabindex="1"><img src="http://q3bv8d9ot.bkt.clouddn.com/img/20200102212737.png" alt="" loading="lazy"></figure>
+<h4 id="宏任务">宏任务</h4>
+<p>产生宏任务的主要来源有：</p>
+<ol>
+<li>DOM操作</li>
+<li>监听事件回调（键盘、鼠标事件等）</li>
+<li>AJAX请求</li>
+<li>调用浏览器API（如：history.back()）</li>
+<li>setTimeout/setInterval</li>
+<li>操作IndexDB</li>
+</ol>
+<p>已上产生的事件，每次只会执行一件。</p>
+<h4 id="微任务">微任务</h4>
+<p>产生微任务的主要来源有：</p>
+<ol>
+<li>Promise.then、Promise.catch、Promise.finally</li>
+<li>MutationObserver</li>
+<li>Object.observe</li>
+</ol>
+<p>「微任务队列」中的事件会逐一执行。</p>
+<h4 id="requestanimationframe">requestAnimationFrame</h4>
+<p>requestAnimationFrame的回调机制在不同的浏览器上不同，在<code>Eage</code>和<code>Safari</code>上会在UI渲染之后调用，在<code>Chrome</code>和<code>Firefox</code>上会在UI渲染之前调用。</p>
+<h2 id="结语">结语</h2>
+<p>已上记录了一些关于事件循环（Event Loop）以及浏览器渲染时机的知识点，关于事件循环（Event Loop）能搜索到很多的题目去练习，了解原理后可以结合题目作更深的理解。</p>
+<hr>
+<h4 id="参考">参考</h4>
+<p><a href="https://www.404forest.com/2017/07/18/how-javascript-actually-works-eventloop-and-uirendering/">深入探究 eventloop 与浏览器渲染的时序问题</a></p>
+<p><a href="https://html.spec.whatwg.org/multipage/webappapis.html">webappapis</a></p>
+<p><a href="https://www.bilibili.com/video/av63614289?from=search&amp;seid=194262817695151355">【前端】事件原理讲解</a></p>
+<p><a href="https://zh.javascript.info/event-loop">事件循环：微任务和宏任务</a></p>
+]]></content>
+    </entry>
+</feed>
