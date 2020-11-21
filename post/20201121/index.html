@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>设计模式之工厂模式 | 北落师门</title>
-<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1605922702544">
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1605922960641">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="设计模式之工厂模式 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
@@ -11,11 +11,9 @@
 
 
 
-    <meta name="description" content="
-为了成为优秀的工程师，我们踏上了，学习「设计模式」的征程。我们并不知道设计模式有什么用，也不知道怎么用好设计模式，但是我们还是迈出了第一步，去了解它。
-
-一、介绍
-每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像..." />
+    <meta name="description" content="一、介绍
+每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像是背单词时候的「abandon」，它易于理解且经常用到，所以我也将它作为学习「设计模式」的第一步。
+我们都知道，工厂模式是为了创建对象而存在的（主要是听到的..." />
     <meta name="keywords" content="设计模式" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -25,7 +23,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://yuqiusuo.github.io">
-  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1605922702544" alt="">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1605922960641" alt="">
   </a>
   <h1 class="site-title">
     北落师门
@@ -98,10 +96,7 @@
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <blockquote>
-<p>为了成为优秀的工程师，我们踏上了，学习「设计模式」的征程。我们并不知道设计模式有什么用，也不知道怎么用好设计模式，但是我们还是迈出了第一步，去了解它。</p>
-</blockquote>
-<h4 id="一-介绍">一、介绍</h4>
+                <h4 id="一-介绍">一、介绍</h4>
 <p>每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像是背单词时候的「abandon」，它易于理解且经常用到，所以我也将它作为学习「设计模式」的第一步。</p>
 <p>我们都知道，工厂模式是为了<strong>创建对象</strong>而存在的（主要是听到的太多了~）。对象是一个系统的基石，我们编写的功能都可以抽象成由一个个对象组合而成，请求是由一个个XmlHttpRequest对象执行的、页面由一个个DOM节点对象堆砌而成等等。我们在前端框架之中往往会对请求作一层层的封装（比如我们会在JQuery.ajax、axios之上再封装一层），那我们在生成这些对象的时候，会发现他们都有着相似之处，就像是由工厂生产出来的一个个产品，那我们封装的过程其实就和「工厂模式」很相近了。</p>
 <p>工厂模式属于**「创建型模式」**的一种，与之相关的有：简单工厂模式、工厂模式和抽象工厂模式。</p>
