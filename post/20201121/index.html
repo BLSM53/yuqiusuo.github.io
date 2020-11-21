@@ -1,0 +1,457 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>设计模式之工厂模式 | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1605922702544">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="设计模式之工厂模式 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+为了成为优秀的工程师，我们踏上了，学习「设计模式」的征程。我们并不知道设计模式有什么用，也不知道怎么用好设计模式，但是我们还是迈出了第一步，去了解它。
+
+一、介绍
+每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像..." />
+    <meta name="keywords" content="设计模式" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1605922702544" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              设计模式之工厂模式
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-11-19
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/LNCoEqkdH/" class="post-tag">
+                  # 设计模式
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="http://file.yuqiusuo.top/img/20201121093750.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<p>为了成为优秀的工程师，我们踏上了，学习「设计模式」的征程。我们并不知道设计模式有什么用，也不知道怎么用好设计模式，但是我们还是迈出了第一步，去了解它。</p>
+</blockquote>
+<h4 id="一-介绍">一、介绍</h4>
+<p>每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像是背单词时候的「abandon」，它易于理解且经常用到，所以我也将它作为学习「设计模式」的第一步。</p>
+<p>我们都知道，工厂模式是为了<strong>创建对象</strong>而存在的（主要是听到的太多了~）。对象是一个系统的基石，我们编写的功能都可以抽象成由一个个对象组合而成，请求是由一个个XmlHttpRequest对象执行的、页面由一个个DOM节点对象堆砌而成等等。我们在前端框架之中往往会对请求作一层层的封装（比如我们会在JQuery.ajax、axios之上再封装一层），那我们在生成这些对象的时候，会发现他们都有着相似之处，就像是由工厂生产出来的一个个产品，那我们封装的过程其实就和「工厂模式」很相近了。</p>
+<p>工厂模式属于**「创建型模式」**的一种，与之相关的有：简单工厂模式、工厂模式和抽象工厂模式。</p>
+<h4 id="二-简单工厂模式">二、简单工厂模式</h4>
+<p>简单工厂模式可以理解为「一家工厂根据不同的模具来生产产品」的模式，如下举例：</p>
+<pre><code class="language-javascript">// 工厂
+class SimpleRequestFactory {
+    constructor() {}
+
+    createRequest(type) {
+        let req = null;
+        switch (type) {
+            case 'get':
+                req = new GetRequest(); // GetRequest为get请求的模具
+                break;
+            case 'post':
+                req = new PostRequest(); // PostRequest为post请求的模具
+                break;
+        }
+
+        return req;
+    }
+}
+
+// 工厂生产处get请求的产品
+const getRequestInstance = SimpleRequestFactory.createRequest('get');
+getRequestInstance.setUrl('https://xxx'); // 设置get请求的url
+getRequestInstance.setParams({id: 'xxx'}); // 设置get请求的参数
+getRequestInstance.request();
+
+// 工厂生产处post请求的产品
+const postRequestInstance = SimpleRequestFactory.createRequest('post');
+postRequestInstance.setUrl('https://xxx'); // 设置post请求的url
+postRequestInstance.setParams({id: 'xxx'}); // 设置post请求的参数
+getRequestInstance.request();
+</code></pre>
+<p>以上就是简单工厂模式运行模式，利用这种方式，我们就可以根据不同请求的需要，来不断生产request请求对象，我们并不需要关心request的实例对象是怎么生成的，我们只需要得到它、使用它即可。</p>
+<p>所以「简单工厂模式」的特点就是：</p>
+<ul>
+<li>我们只需要知道我们要生产的产品的名称即可</li>
+<li>我们不需要知道产品怎么来的，我们只需要知道产品怎么用</li>
+</ul>
+<p>由上面的代码我们也能看出，简单工厂模式是具有三大要素的：</p>
+<ul>
+<li>工厂类：由它根据模具来生产产品</li>
+<li>模具类（抽象类产品）：它是所有产品的基石，我们根据它们来得到用户使用的产品</li>
+<li>产品对象：简单工厂模式的创建目标，用户最终使用的就是具体的产品对象</li>
+</ul>
+<h4 id="三-工厂模式">三、工厂模式</h4>
+<p>工厂模式是在简单工厂模式之上做了优化处理之后形成一种模式，我们先看有关于工厂模式的代码</p>
+<pre><code class="language-javascript">class RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        // 我只代表每种RequestFactory都要实现createRequest方法
+        // 而我不生产任何产品
+    }
+}
+
+// get请求的工厂
+class GetRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new GetRequest();
+    }
+}
+
+// post请求的工厂
+class PostRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new PostRequest();
+    }
+}
+
+// put请求的工厂
+class PutRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new PutRequest();
+    }
+}
+
+// 生产get请求的产品
+const getRequestIns = GetRequestFactory.createRequest();
+getRequestIns.setUrl('https://xxx'); // 设置get请求的url
+getRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+getRequestIns.request();
+
+// 生产post请求的产品
+const postRequestIns = PostRequestFactory.createRequest();
+postRequestIns.setUrl('https://xxx'); // 设置get请求的url
+postRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+postRequestIns.request();
+
+// 生产put请求的产品
+const putRequestIns = PutRequestFactory.createRequest();
+putRequestIns.setUrl('https://xxx'); // 设置get请求的url
+putRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+putRequestIns.request();
+</code></pre>
+<p>由上面的代码可以看出，我们把每一种请求的生产工厂都独立出来了，看似没有简单工厂模式方便，但是我们可以在生活之中找到例子辅助理解。</p>
+<p>比如我们A公司是一家生产饮品的公司，我们最开始有一条生产线专门生产矿泉水，我们叫「XX山泉」，后来我们发现矿泉水做的不错，我们想多做一些产品，如「XX AD钙奶」和「XX 纯牛奶」，那我们应该怎么做呢？这时我们可能根据生活中看到的例子，可以想到，我们只要照搬A公司的基础部门（如行政），再成立几家公司，分别生产「XX AD钙奶」和「XX 纯牛奶」即可。那我们为什么不在A公司的基础上不断扩充生产线呢？因为一旦生产线越来越多，管理就越来越复杂，我们需要不断地折腾A公司，还不如复制一个抽象公司，然后专事专做。</p>
+<p>上面的例子就是为了帮助我们理解「简单工厂模式」和「工厂模式」的区别的，那我们什么时候用哪种模式呢？我的理解就是：</p>
+<ul>
+<li>如果系统简单，需要生成的对象类型可数，就用「简单工厂模式」</li>
+<li>如果系统存在扩展的可能性，且我们无法预计未来扩展的规模，就用「工厂模式」</li>
+</ul>
+<p>其实上面说的也关乎到设计模式中的一个原则——<strong>「开闭原则」</strong>。</p>
+<p>再回到「工厂模式」之上，我们可以看到工厂模式的特点就是：</p>
+<ul>
+<li>符合「开闭原则」，易于扩展</li>
+<li>会增加系统的复杂度</li>
+</ul>
+<p>「工厂模式」包含四大要素：</p>
+<ul>
+<li>抽象工厂：抽象工厂不是一家实际的公司，但是他拥有所有公司共同点</li>
+<li>实体工厂：实体工厂负责生产具体的产品</li>
+<li>模具（抽象产品）：我们根据模具来生产产品</li>
+<li>实体产品：用户最终得到并使用实体产品</li>
+</ul>
+<h4 id="三-抽象工厂模式">三、抽象工厂模式</h4>
+<p>此时肯定有朋友想到了一个问题：「现实中我们也并不是所有的工厂都只生产一类产品，牛奶工厂可以生产纯牛奶、酸奶等等」，这就是我们提到的抽象工厂模式了。示例代码如下</p>
+<pre><code class="language-javascript">// 抽象工厂
+class RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        // 我只代表每种RequestFactory都要实现createRequest方法
+        // 而我不生产任何产品
+    }
+}
+
+/** 看这 start **/
+// 抽象的get请求
+class GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 简单的get请求（不需要带参数的get请求）
+class SimpleGetRequest extends GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 普通的get请求
+class NormalGetRequest extends GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 抽象的post请求
+class PostRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 简单的post请求（不需要带参数的post请求）
+class SimplePostRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 普通的post请求
+class NormalPostRequest extends PostRequest{
+    constructor() {}
+
+    request() {}
+}
+/** 看这 end **/
+
+// get请求的工厂
+class GetRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createSimpleRequest() {
+        return new SimpleGetRequest();
+    }
+
+    createNormalRequest() {
+        return new NormalGetRequest();
+    }
+}
+
+// post请求的工厂
+class PostRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createSimpleRequest() {
+        return new SimplePostRequest();
+    }
+
+    createNormalRequest() {
+        return new NormalPostRequest();
+    }
+}
+
+// 生产get请求的产品
+const simpleGetRequestIns = GetRequestFactory.createSimpleRequest();
+simpleGetRequestIns.setUrl('https://xxx'); // 设置get请求的url
+simpleGetRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+simpleGetRequestIns.request();
+const normalGetRequestIns = GetRequestFactory.createNormalRequest();
+normalGetRequestIns.setUrl('https://xxx'); // 设置get请求的url
+normalGetRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+normalGetRequestIns.request();
+
+// 生产post请求的产品
+const simplePostRequestIns = PostRequestFactory.createSimpleRequest();
+simplePostRequestIns.setUrl('https://xxx'); // 设置get请求的url
+simplePostRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+simplePostRequestIns.request();
+const normalPostRequestIns = PostRequestFactory.createNormalRequest();
+normalPostRequestIns.setUrl('https://xxx'); // 设置get请求的url
+normalPostRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+normalPostRequestIns.request();
+</code></pre>
+<p>通过上面的代码，我们可以看到，抽象工厂模式之于工厂模式的不同就是在工厂模式的基础上，对产品也进行了一层抽象，从而实现了一个实体工厂也能生产多个产品的功能。</p>
+<p>「抽象工厂模式」的好处就是：</p>
+<ul>
+<li>易于交换产品系列，我们只需要初始化工厂，就可以随意切换生产的产品</li>
+<li>它让具体的创建实例过程和客户端分离，客户端通过他们的抽象接口操纵实例，产品的具体类名也被具体工厂的实现分离，不会出现在客户代码中。</li>
+</ul>
+<p>「抽象工厂模式」有五大要素：</p>
+<ul>
+<li>抽象工厂</li>
+<li>实体工厂</li>
+<li>抽象模具</li>
+<li>模具</li>
+<li>实体产品</li>
+</ul>
+<blockquote>
+<p>创建型模式: 创建型模式抽象了实例化的过程，他们帮助一个系统独立于如何创建、组合和表示它的那些对象。创建型模式都会将关于该系统使用哪些具体的类的信息封装起来。允许客户用结构和功能差别很大的「产品」对象配置一个系统。配置可以是静态的，即在编译时指定，也可以是动态的，就是运行时再指定。</p>
+</blockquote>
+<blockquote>
+<p>开闭原则: 开放-封闭原则是说软件实体（类、模块、函数等等）应该是可以扩展、但是不可修改[ASD]。</p>
+</blockquote>
+<hr>
+<h6 id="参考">参考</h6>
+<ul>
+<li>
+<p>[大话设计模式 - 程杰]</p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/20367734/answer/1089721250">工厂模式与抽象工厂模式的区别 - 贾不假</a></p>
+</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E4%B8%80-%E4%BB%8B%E7%BB%8D">一、介绍</a></li>
+<li><a href="#%E4%BA%8C-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">二、简单工厂模式</a></li>
+<li><a href="#%E4%B8%89-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">三、工厂模式</a></li>
+<li><a href="#%E4%B8%89-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">三、抽象工厂模式</a><br>
+*
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/202009142152/">
+              <h3 class="post-title">
+                刀锋
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

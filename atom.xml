@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2020-11-19T08:20:02.444Z</updated>
+    <updated>2020-11-21T01:38:27.699Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -10,6 +10,274 @@
     <logo>https://yuqiusuo.github.io/images/avatar.png</logo>
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 北落师门</rights>
+    <entry>
+        <title type="html"><![CDATA[设计模式之工厂模式]]></title>
+        <id>https://yuqiusuo.github.io/post/20201121/</id>
+        <link href="https://yuqiusuo.github.io/post/20201121/">
+        </link>
+        <updated>2020-11-19T14:52:39.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>为了成为优秀的工程师，我们踏上了，学习「设计模式」的征程。我们并不知道设计模式有什么用，也不知道怎么用好设计模式，但是我们还是迈出了第一步，去了解它。</p>
+</blockquote>
+<h4 id="一-介绍">一、介绍</h4>
+<p>每当我听到有人讨论设计模式时，我听到最多的概念好像就是「工厂模式」，他就像是背单词时候的「abandon」，它易于理解且经常用到，所以我也将它作为学习「设计模式」的第一步。</p>
+<p>我们都知道，工厂模式是为了<strong>创建对象</strong>而存在的（主要是听到的太多了~）。对象是一个系统的基石，我们编写的功能都可以抽象成由一个个对象组合而成，请求是由一个个XmlHttpRequest对象执行的、页面由一个个DOM节点对象堆砌而成等等。我们在前端框架之中往往会对请求作一层层的封装（比如我们会在JQuery.ajax、axios之上再封装一层），那我们在生成这些对象的时候，会发现他们都有着相似之处，就像是由工厂生产出来的一个个产品，那我们封装的过程其实就和「工厂模式」很相近了。</p>
+<p>工厂模式属于**「创建型模式」**的一种，与之相关的有：简单工厂模式、工厂模式和抽象工厂模式。</p>
+<h4 id="二-简单工厂模式">二、简单工厂模式</h4>
+<p>简单工厂模式可以理解为「一家工厂根据不同的模具来生产产品」的模式，如下举例：</p>
+<pre><code class="language-javascript">// 工厂
+class SimpleRequestFactory {
+    constructor() {}
+
+    createRequest(type) {
+        let req = null;
+        switch (type) {
+            case 'get':
+                req = new GetRequest(); // GetRequest为get请求的模具
+                break;
+            case 'post':
+                req = new PostRequest(); // PostRequest为post请求的模具
+                break;
+        }
+
+        return req;
+    }
+}
+
+// 工厂生产处get请求的产品
+const getRequestInstance = SimpleRequestFactory.createRequest('get');
+getRequestInstance.setUrl('https://xxx'); // 设置get请求的url
+getRequestInstance.setParams({id: 'xxx'}); // 设置get请求的参数
+getRequestInstance.request();
+
+// 工厂生产处post请求的产品
+const postRequestInstance = SimpleRequestFactory.createRequest('post');
+postRequestInstance.setUrl('https://xxx'); // 设置post请求的url
+postRequestInstance.setParams({id: 'xxx'}); // 设置post请求的参数
+getRequestInstance.request();
+</code></pre>
+<p>以上就是简单工厂模式运行模式，利用这种方式，我们就可以根据不同请求的需要，来不断生产request请求对象，我们并不需要关心request的实例对象是怎么生成的，我们只需要得到它、使用它即可。</p>
+<p>所以「简单工厂模式」的特点就是：</p>
+<ul>
+<li>我们只需要知道我们要生产的产品的名称即可</li>
+<li>我们不需要知道产品怎么来的，我们只需要知道产品怎么用</li>
+</ul>
+<p>由上面的代码我们也能看出，简单工厂模式是具有三大要素的：</p>
+<ul>
+<li>工厂类：由它根据模具来生产产品</li>
+<li>模具类（抽象类产品）：它是所有产品的基石，我们根据它们来得到用户使用的产品</li>
+<li>产品对象：简单工厂模式的创建目标，用户最终使用的就是具体的产品对象</li>
+</ul>
+<h4 id="三-工厂模式">三、工厂模式</h4>
+<p>工厂模式是在简单工厂模式之上做了优化处理之后形成一种模式，我们先看有关于工厂模式的代码</p>
+<pre><code class="language-javascript">class RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        // 我只代表每种RequestFactory都要实现createRequest方法
+        // 而我不生产任何产品
+    }
+}
+
+// get请求的工厂
+class GetRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new GetRequest();
+    }
+}
+
+// post请求的工厂
+class PostRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new PostRequest();
+    }
+}
+
+// put请求的工厂
+class PutRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        return new PutRequest();
+    }
+}
+
+// 生产get请求的产品
+const getRequestIns = GetRequestFactory.createRequest();
+getRequestIns.setUrl('https://xxx'); // 设置get请求的url
+getRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+getRequestIns.request();
+
+// 生产post请求的产品
+const postRequestIns = PostRequestFactory.createRequest();
+postRequestIns.setUrl('https://xxx'); // 设置get请求的url
+postRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+postRequestIns.request();
+
+// 生产put请求的产品
+const putRequestIns = PutRequestFactory.createRequest();
+putRequestIns.setUrl('https://xxx'); // 设置get请求的url
+putRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+putRequestIns.request();
+</code></pre>
+<p>由上面的代码可以看出，我们把每一种请求的生产工厂都独立出来了，看似没有简单工厂模式方便，但是我们可以在生活之中找到例子辅助理解。</p>
+<p>比如我们A公司是一家生产饮品的公司，我们最开始有一条生产线专门生产矿泉水，我们叫「XX山泉」，后来我们发现矿泉水做的不错，我们想多做一些产品，如「XX AD钙奶」和「XX 纯牛奶」，那我们应该怎么做呢？这时我们可能根据生活中看到的例子，可以想到，我们只要照搬A公司的基础部门（如行政），再成立几家公司，分别生产「XX AD钙奶」和「XX 纯牛奶」即可。那我们为什么不在A公司的基础上不断扩充生产线呢？因为一旦生产线越来越多，管理就越来越复杂，我们需要不断地折腾A公司，还不如复制一个抽象公司，然后专事专做。</p>
+<p>上面的例子就是为了帮助我们理解「简单工厂模式」和「工厂模式」的区别的，那我们什么时候用哪种模式呢？我的理解就是：</p>
+<ul>
+<li>如果系统简单，需要生成的对象类型可数，就用「简单工厂模式」</li>
+<li>如果系统存在扩展的可能性，且我们无法预计未来扩展的规模，就用「工厂模式」</li>
+</ul>
+<p>其实上面说的也关乎到设计模式中的一个原则——<strong>「开闭原则」</strong>。</p>
+<p>再回到「工厂模式」之上，我们可以看到工厂模式的特点就是：</p>
+<ul>
+<li>符合「开闭原则」，易于扩展</li>
+<li>会增加系统的复杂度</li>
+</ul>
+<p>「工厂模式」包含四大要素：</p>
+<ul>
+<li>抽象工厂：抽象工厂不是一家实际的公司，但是他拥有所有公司共同点</li>
+<li>实体工厂：实体工厂负责生产具体的产品</li>
+<li>模具（抽象产品）：我们根据模具来生产产品</li>
+<li>实体产品：用户最终得到并使用实体产品</li>
+</ul>
+<h4 id="三-抽象工厂模式">三、抽象工厂模式</h4>
+<p>此时肯定有朋友想到了一个问题：「现实中我们也并不是所有的工厂都只生产一类产品，牛奶工厂可以生产纯牛奶、酸奶等等」，这就是我们提到的抽象工厂模式了。示例代码如下</p>
+<pre><code class="language-javascript">// 抽象工厂
+class RequestFactory {
+    constructor() {}
+
+    createRequest() {
+        // 我只代表每种RequestFactory都要实现createRequest方法
+        // 而我不生产任何产品
+    }
+}
+
+/** 看这 start **/
+// 抽象的get请求
+class GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 简单的get请求（不需要带参数的get请求）
+class SimpleGetRequest extends GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 普通的get请求
+class NormalGetRequest extends GetRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 抽象的post请求
+class PostRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 简单的post请求（不需要带参数的post请求）
+class SimplePostRequest{
+    constructor() {}
+
+    request() {}
+}
+
+// 普通的post请求
+class NormalPostRequest extends PostRequest{
+    constructor() {}
+
+    request() {}
+}
+/** 看这 end **/
+
+// get请求的工厂
+class GetRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createSimpleRequest() {
+        return new SimpleGetRequest();
+    }
+
+    createNormalRequest() {
+        return new NormalGetRequest();
+    }
+}
+
+// post请求的工厂
+class PostRequestFactory extends RequestFactory {
+    constructor() {}
+
+    createSimpleRequest() {
+        return new SimplePostRequest();
+    }
+
+    createNormalRequest() {
+        return new NormalPostRequest();
+    }
+}
+
+// 生产get请求的产品
+const simpleGetRequestIns = GetRequestFactory.createSimpleRequest();
+simpleGetRequestIns.setUrl('https://xxx'); // 设置get请求的url
+simpleGetRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+simpleGetRequestIns.request();
+const normalGetRequestIns = GetRequestFactory.createNormalRequest();
+normalGetRequestIns.setUrl('https://xxx'); // 设置get请求的url
+normalGetRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+normalGetRequestIns.request();
+
+// 生产post请求的产品
+const simplePostRequestIns = PostRequestFactory.createSimpleRequest();
+simplePostRequestIns.setUrl('https://xxx'); // 设置get请求的url
+simplePostRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+simplePostRequestIns.request();
+const normalPostRequestIns = PostRequestFactory.createNormalRequest();
+normalPostRequestIns.setUrl('https://xxx'); // 设置get请求的url
+normalPostRequestIns.setParams({id: 'xxx'}); // 设置get请求的参数
+normalPostRequestIns.request();
+</code></pre>
+<p>通过上面的代码，我们可以看到，抽象工厂模式之于工厂模式的不同就是在工厂模式的基础上，对产品也进行了一层抽象，从而实现了一个实体工厂也能生产多个产品的功能。</p>
+<p>「抽象工厂模式」的好处就是：</p>
+<ul>
+<li>易于交换产品系列，我们只需要初始化工厂，就可以随意切换生产的产品</li>
+<li>它让具体的创建实例过程和客户端分离，客户端通过他们的抽象接口操纵实例，产品的具体类名也被具体工厂的实现分离，不会出现在客户代码中。</li>
+</ul>
+<p>「抽象工厂模式」有五大要素：</p>
+<ul>
+<li>抽象工厂</li>
+<li>实体工厂</li>
+<li>抽象模具</li>
+<li>模具</li>
+<li>实体产品</li>
+</ul>
+<blockquote>
+<p>创建型模式: 创建型模式抽象了实例化的过程，他们帮助一个系统独立于如何创建、组合和表示它的那些对象。创建型模式都会将关于该系统使用哪些具体的类的信息封装起来。允许客户用结构和功能差别很大的「产品」对象配置一个系统。配置可以是静态的，即在编译时指定，也可以是动态的，就是运行时再指定。</p>
+</blockquote>
+<blockquote>
+<p>开闭原则: 开放-封闭原则是说软件实体（类、模块、函数等等）应该是可以扩展、但是不可修改[ASD]。</p>
+</blockquote>
+<hr>
+<h6 id="参考">参考</h6>
+<ul>
+<li>
+<p>[大话设计模式 - 程杰]</p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/20367734/answer/1089721250">工厂模式与抽象工厂模式的区别 - 贾不假</a></p>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[刀锋]]></title>
         <id>https://yuqiusuo.github.io/post/202009142152/</id>
@@ -923,48 +1191,6 @@ console.log(typeof descriptor.get); // &quot;function&quot;
 <p>重新打包即可</p>
 </li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[态度]]></title>
-        <id>https://yuqiusuo.github.io/post/taidu/</id>
-        <link href="https://yuqiusuo.github.io/post/taidu/">
-        </link>
-        <updated>2020-09-14T08:41:56.000Z</updated>
-        <content type="html"><![CDATA[<p>今天读了吴军的「态度」一书，这本书是吴军写给他的两个女儿的信件的合集，其间表达了吴军对于学习、生活和工作等方面的看法与见解。其中有很多的观点说的很好，我也希望能应用到我未来的学习、工作与生活中。</p>
-<p>「态度」一书分为6大章节，分别是「人生哲学」、「洞察世界」、「对待金钱」、「人际关系」、「有效学习」以及「做人做事」。每一章节都有几封信件，是吴军向女儿表述自己对待一些问题的看法，引导她们或者与她们讨论。</p>
-<p>就我个人而言，我觉得我的认知有几点：</p>
-<ul>
-<li>多做些精益求精的事情</li>
-<li>交流与合作</li>
-<li>持续学习</li>
-</ul>
-<p>虽然「格局」与「见识」两个词贯穿全书，但是给我一种摸不着头脑的感觉。上述三种感觉是我读完本书后的真切感受。</p>
-<h4 id="多做些精益求精的事情">多做些精益求精的事情</h4>
-<p>这句话有三层意思：</p>
-<ul>
-<li>做高价值/优先级高的事情</li>
-<li>做好你正在做的事情</li>
-<li>突破自己</li>
-</ul>
-<p>我们平时在工作生活中，做事情的习惯很多都是一把抓，看到眼里的都做了，或者只挑简单的事情去做。这样我们能不断地享受<strong>完成任务</strong>的反馈，自我感觉良好。可是我们很多时候做的事情都是低价值的，或者说低优先级的。有很多事情，我们是可以选择不做的，及时不做，影响也不会大。我们应该在自己做的事情之中挑出那些<strong>价值高的</strong>、<strong>优先级高</strong>的事情来做。这样更有助于我们在工作学习中的成长。</p>
-<p>与此同时，我们在做事情的时候，要多注意这件事情的细节。<strong>做好一件事情的每个细节，这件事情也就不会做的多差</strong>。其实这也是在说在做事情的时候，我们多去想一想这件事情，<strong>专注</strong>的力量很强大，不要凭借着自己做事情的惯性去做事情，与思考作伴，做好正在做的事情。</p>
-<p>第三点是突破自己，尤其在工作中，做事情总会挑做的多的事情来做，顺手就来，顺手就做好了，久而久之，就在舒适圈中徘徊。我们应该多把时间用在做能够自我突破的事情上，<strong>多去体验，多去总结，多去提高</strong>。在成长的路上走得远一些，看的风景多一些，回过头去能看到一步一个阶梯在往上走。</p>
-<p>多做些精益求精的事情，人是要给自己的成就感的，不管是成长还是回顾，都让自己能有所回味。</p>
-<h4 id="交流与合作">交流与合作</h4>
-<p>程序员做久了，总会有些固化思维，比如什么事情都想自己亲手去做，虽然未必自己会做的更好，但是总觉得自己做会放心些，这就是缺乏交流与合作的态度。在学习和工作过程中，交流与合作实在都是非常重要的事情，工作中绝大部分事情，靠一个人去做都不会做好。工作中注重交流与合作也有很多的好处：</p>
-<ul>
-<li>把事情做得更好</li>
-<li>向周围的人互相学习</li>
-<li>锻炼领导力</li>
-</ul>
-<p>首先是「更好」一词，这里没有用最好，因为我们每经过一段时间的成长，对待事情的看法都会不一样，对于「好」的认知也都会不同。但是我们可以随着自己的成长，与身边的人一起，把大家一起做的事情，每一次都做得更好一些，这样不断地锻炼与成长。收获的是合作的经验与做事的方法，合作才是工作的本质。</p>
-<p>在我们的工作生活中，我们也总会遇到很多优秀的同事与朋友，在大家的交流合作的过程中，了解别人的观点、做事情的方法，同时将自己的经验予以分享。与优秀的人一起合作交流，大家会互相提升，提高自己的能力与见识，最终是多做一些对社会有益的事情。</p>
-<p>最后，合作是大家一起把一件事情做好，领导者所要做的，是将事情或者困难分解成小模块，之后大家各司其职，将事情做好，或将困难克服。如果有机会，我们应该争取去做领导者的角色，锻炼我们分解任务的能力，以及分解之后与大家的沟通能力，引导大家将目标完成。</p>
-<h4 id="持续学习">持续学习</h4>
-<p>持续学习就不需要过多的表述了，很多人在30岁之后就停止成长了，希望自己能够把持续学习记在心上，实践在行动上。这让我想到我的父亲，在50岁之后学习财务，成为一家公司的财务总监，这种持续学习的态度和能力，都会是我终身的榜样。</p>
-<p>「态度」一书中还提到了很多的观点值得我学习，可是我们总是爱做思考、做规划，才发现要学习的事情太多了，总会让人望而却步。希望自己能够秉承着「脚踏实地」的态度，持续学习、持续成长，最终能多做一些对社会有益的事情。</p>
-<figure data-type="image" tabindex="1"><img src="http://file.yuqiusuo.top/img/20200914164405.png" alt="态度 xmind" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
