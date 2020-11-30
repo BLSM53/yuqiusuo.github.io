@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2020-11-21T01:58:00.117Z</updated>
+    <updated>2020-11-30T14:20:29.564Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -11,7 +11,112 @@
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 北落师门</rights>
     <entry>
-        <title type="html"><![CDATA[设计模式之工厂模式]]></title>
+        <title type="html"><![CDATA[2. 设计模式之策略模式]]></title>
+        <id>https://yuqiusuo.github.io/post/20201130/</id>
+        <link href="https://yuqiusuo.github.io/post/20201130/">
+        </link>
+        <updated>2020-11-30T14:18:30.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="一-定义">一、定义</h4>
+<p>今天我们讨论的设计模式是「策略模式」，策略模式比较好理解，首先我们看一下他的定义：</p>
+<blockquote>
+<p>策略模式是一种定义一系列算法的方法，从概念上来看，所有这些算法完成的都是相同的工作，只是实现不同，他可以以相同的方式调用所有的算法，减少了各种算法类与使用算法类之间的耦合「DEP」。</p>
+</blockquote>
+<p>由上面的定义我们可以看到，策略模式有3个要素：</p>
+<ul>
+<li>策略模板：策略模式的算法都是为了完成相同的工作的，只是可能触发条件不同，所以我们就可以抽象出来一个策略模板，类似于「工厂模式中的产品模板」；</li>
+<li>策略：根据具体场景实现不同的策略，以根据实际场景得到具体的结果；</li>
+<li>上下文：上下文根据场景不同来决定使用哪种策略。</li>
+</ul>
+<h4 id="二-举例说明">二、举例说明</h4>
+<p>策略模式在生活中也比较常见，下面举例说明：</p>
+<p>当我们在生活中乘坐公交地铁的时候，合肥市的票价是2元、学生半价、老年人免票，这就是一种常见的设计模式，我们可以看出：</p>
+<ul>
+<li>都是为了解决人们乘车计价的问题</li>
+<li>不同年龄段的人计算价格方法不同</li>
+</ul>
+<p>那我们就有实现方案：</p>
+<pre><code class="language-javascript">//策略模板
+class StrategyTemplate {
+    constructor() {}
+}
+
+// 老年人免票
+class OldPersonStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 0;
+    }
+}
+
+// 学生半价
+class StudentStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 1;
+    }
+}
+
+// 普票2元
+class NormalStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 2;
+    }
+}
+
+// 上下文传入策略并使用
+class BusContext {
+    constructor(strategy) {
+        this.strategy = strategy;
+    }
+
+    pay() {
+        return this.strategy.calculatePrice();
+    }
+}
+
+// 使用
+const oldPerson = new BusContext(new OldPersonStrategy());
+oldPerson.pay();
+const student = new BusContext(new StudentStrategy());
+student.pay();
+const person = new BusContext(new NormalStrategy());
+person.pay();
+</code></pre>
+<p>生活中我们随处可见也有很多策略模式的使用，比如洗衣机（快洗、漂洗、大件等）、电饭煲（煮饭、煮粥等）、电动牙刷（高频、中频、低频）、购物（满减、打折、返利等）。</p>
+<h4 id="总结">总结</h4>
+<p>由上面这么多的例子我们可以总结出来，策略模式的使用场景有几个特点：</p>
+<ul>
+<li>面对一个问题/需求有多种解决策略，需要判断不同的场景</li>
+<li>场景的数量较少</li>
+</ul>
+<p>优点就是：</p>
+<ul>
+<li>策略与策略之间相互独立，扩展性、维护性比较好</li>
+<li>单元测试好做</li>
+<li>减少了<code>switch/if else</code>判断</li>
+</ul>
+<p>缺点就是：</p>
+<ul>
+<li>不适合解决场景太多的情况</li>
+</ul>
+<hr>
+<h6 id="参考">参考</h6>
+<ul>
+<li>
+<p>[大话设计模式 - 程杰]:</p>
+</li>
+<li>
+<p><a href="https://www.bilibili.com/video/BV1vT4y1E7g6?from=search&amp;seid=4459298229967337994">五分钟学设计模式.10.策略模式</a></p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[1. 设计模式之工厂模式]]></title>
         <id>https://yuqiusuo.github.io/post/20201121/</id>
         <link href="https://yuqiusuo.github.io/post/20201121/">
         </link>
@@ -1150,44 +1255,6 @@ console.log(typeof descriptor.get); // &quot;function&quot;
 <hr>
 <h4 id="引用">引用</h4>
 <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts">格式化上下文简介</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[vue打包兼容IE11]]></title>
-        <id>https://yuqiusuo.github.io/post/202009141646/</id>
-        <link href="https://yuqiusuo.github.io/post/202009141646/">
-        </link>
-        <updated>2020-09-14T08:45:11.000Z</updated>
-        <content type="html"><![CDATA[<ol>
-<li>
-<p>确保安装过<code>babel-loader</code>和<code>babel-polyfill</code></p>
-<pre><code class="language-javascript">cnpm i babel-loader babel-polyfill -D
-</code></pre>
-</li>
-<li>
-<p>将webpack配置文件修改为</p>
-<pre><code class="language-javascript">entry: {
-    app:['babel-polyfill', './src/main.js']
-}
-</code></pre>
-<pre><code class="language-javascript">{
-    test: /\.js$/,
-    loader: 'babel-loader?cacheDirectory',
-    include: [
-        resolve('src'),
-        resolve('test'),
-        resolve('node_modules/_element-ui@2.4.7@element-ui/src'),
-        resolve('node_modules/_element-ui@2.4.7@element-ui/package')
-    ]
-}
-
-// 上述element-ui文件目录以本地 node_modules 中 element-ui 文件夹名称为准
-</code></pre>
-</li>
-<li>
-<p>重新打包即可</p>
-</li>
-</ol>
 ]]></content>
     </entry>
 </feed>

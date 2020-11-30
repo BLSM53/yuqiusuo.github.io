@@ -1,0 +1,296 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2. 设计模式之策略模式 | 北落师门</title>
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1606746027706">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2. 设计模式之策略模式 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="一、定义
+今天我们讨论的设计模式是「策略模式」，策略模式比较好理解，首先我们看一下他的定义：
+
+策略模式是一种定义一系列算法的方法，从概念上来看，所有这些算法完成的都是相同的工作，只是实现不同，他可以以相同的方式调用所有的算法，减少了各种算..." />
+    <meta name="keywords" content="设计模式,前端" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yuqiusuo.github.io">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1606746027706" alt="">
+  </a>
+  <h1 class="site-title">
+    北落师门
+  </h1>
+  <p class="site-description">
+    路漫漫其修远兮，武将上下而求索
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2. 设计模式之策略模式
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-11-30
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/LNCoEqkdH/" class="post-tag">
+                  # 设计模式
+                </a>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="http://file.yuqiusuo.top/img/20201130221820.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h4 id="一-定义">一、定义</h4>
+<p>今天我们讨论的设计模式是「策略模式」，策略模式比较好理解，首先我们看一下他的定义：</p>
+<blockquote>
+<p>策略模式是一种定义一系列算法的方法，从概念上来看，所有这些算法完成的都是相同的工作，只是实现不同，他可以以相同的方式调用所有的算法，减少了各种算法类与使用算法类之间的耦合「DEP」。</p>
+</blockquote>
+<p>由上面的定义我们可以看到，策略模式有3个要素：</p>
+<ul>
+<li>策略模板：策略模式的算法都是为了完成相同的工作的，只是可能触发条件不同，所以我们就可以抽象出来一个策略模板，类似于「工厂模式中的产品模板」；</li>
+<li>策略：根据具体场景实现不同的策略，以根据实际场景得到具体的结果；</li>
+<li>上下文：上下文根据场景不同来决定使用哪种策略。</li>
+</ul>
+<h4 id="二-举例说明">二、举例说明</h4>
+<p>策略模式在生活中也比较常见，下面举例说明：</p>
+<p>当我们在生活中乘坐公交地铁的时候，合肥市的票价是2元、学生半价、老年人免票，这就是一种常见的设计模式，我们可以看出：</p>
+<ul>
+<li>都是为了解决人们乘车计价的问题</li>
+<li>不同年龄段的人计算价格方法不同</li>
+</ul>
+<p>那我们就有实现方案：</p>
+<pre><code class="language-javascript">//策略模板
+class StrategyTemplate {
+    constructor() {}
+}
+
+// 老年人免票
+class OldPersonStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 0;
+    }
+}
+
+// 学生半价
+class StudentStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 1;
+    }
+}
+
+// 普票2元
+class NormalStrategy extends StrategyTemplate {
+    constructor() {}
+
+    calculatePrice() {
+        return 2;
+    }
+}
+
+// 上下文传入策略并使用
+class BusContext {
+    constructor(strategy) {
+        this.strategy = strategy;
+    }
+
+    pay() {
+        return this.strategy.calculatePrice();
+    }
+}
+
+// 使用
+const oldPerson = new BusContext(new OldPersonStrategy());
+oldPerson.pay();
+const student = new BusContext(new StudentStrategy());
+student.pay();
+const person = new BusContext(new NormalStrategy());
+person.pay();
+</code></pre>
+<p>生活中我们随处可见也有很多策略模式的使用，比如洗衣机（快洗、漂洗、大件等）、电饭煲（煮饭、煮粥等）、电动牙刷（高频、中频、低频）、购物（满减、打折、返利等）。</p>
+<h4 id="总结">总结</h4>
+<p>由上面这么多的例子我们可以总结出来，策略模式的使用场景有几个特点：</p>
+<ul>
+<li>面对一个问题/需求有多种解决策略，需要判断不同的场景</li>
+<li>场景的数量较少</li>
+</ul>
+<p>优点就是：</p>
+<ul>
+<li>策略与策略之间相互独立，扩展性、维护性比较好</li>
+<li>单元测试好做</li>
+<li>减少了<code>switch/if else</code>判断</li>
+</ul>
+<p>缺点就是：</p>
+<ul>
+<li>不适合解决场景太多的情况</li>
+</ul>
+<hr>
+<h6 id="参考">参考</h6>
+<ul>
+<li>
+<p>[大话设计模式 - 程杰]:</p>
+</li>
+<li>
+<p><a href="https://www.bilibili.com/video/BV1vT4y1E7g6?from=search&amp;seid=4459298229967337994">五分钟学设计模式.10.策略模式</a></p>
+</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E4%B8%80-%E5%AE%9A%E4%B9%89">一、定义</a></li>
+<li><a href="#%E4%BA%8C-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E">二、举例说明</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a><br>
+*
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/20201121/">
+              <h3 class="post-title">
+                1. 设计模式之工厂模式
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  人之所需，并不是要做些事，而是要有所为，或是说，需有所是
+  <a class="rss" href="https://yuqiusuo.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
