@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>JS面向对象-继承 | 北落师门</title>
-<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1606917640958">
+<link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1606959094324">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="JS面向对象-继承 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
@@ -35,7 +35,7 @@ function Super..." />
       <div class="main-content">
         <div class="site-header">
   <a href="https://yuqiusuo.github.io">
-  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1606917640958" alt="">
+  <img class="avatar" src="https://yuqiusuo.github.io/images/avatar.png?v=1606959094324" alt="">
   </a>
   <h1 class="site-title">
     北落师门
@@ -352,6 +352,32 @@ SubTyper.prototype.sayAge = function() {
           </div>
         
 
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3f0a077b9f7401fd5aa4',
+    clientSecret: '92936738c36fe5f30ab7583a1775e489877e6e94',
+    repo: 'Comments',
+    owner: 'yuqiusuo',
+    admin: ['yuqiusuo'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
         
 
         <div class="site-footer">
