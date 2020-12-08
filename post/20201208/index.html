@@ -2,30 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | 北落师门</title>
+<title>4.设计模式之单例模式 | 北落师门</title>
 <link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1607437216446">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="4.设计模式之单例模式 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
     <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+单例模式（Singleton），保证一个类只有一个实例，并提供一个访问它的全局访问点。
 
-🏠 关于本站
-平时的一些学习、阅读、生活记录
-👨‍💻 博主是谁
-
-北落师门
-
-⛹ 兴趣爱好
-阅读、dota
-📬 联系我呀
-email: yuqiusuo53@163.com
-..." />
-    <meta name="keywords" content="" />
+一说到只有一个实例，并能全局访问，我觉着前端同学能想到的类库就太多太多了，在前几年我们还没有像现在这样实行模块化开发的时候，我们用到的JQuery、..." />
+    <meta name="keywords" content="设计模式,前端" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -87,43 +77,112 @@ email: yuqiusuo53@163.com
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              4.设计模式之单例模式
             </h2>
             <div class="post-info">
               <span>
-                2020-09-14
+                2020-12-08
               </span>
               <span>
-                1 min read
+                3 min read
               </span>
               
+                <a href="https://yuqiusuo.github.io/tag/LNCoEqkdH/" class="post-tag">
+                  # 设计模式
+                </a>
+              
+                <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
+                  # 前端
+                </a>
+              
             </div>
+            
+              <img class="post-feature-image" src="http://file.yuqiusuo.top/img/20201208221812.jpg" alt="">
             
             <div class="post-content-wrapper">
               <div class="post-content">
                 <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
+<p>单例模式（Singleton），保证一个类只有一个实例，并提供一个访问它的全局访问点。</p>
 </blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>平时的一些学习、阅读、生活记录</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<ul>
-<li>北落师门</li>
-</ul>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>阅读、dota</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>email: yuqiusuo53@163.com</p>
+<p>一说到只有一个实例，并能全局访问，我觉着前端同学能想到的类库就太多太多了，在前几年我们还没有像现在这样实行模块化开发的时候，我们用到的<code>JQuery</code>、<code>moment</code>、<code>lodash</code>等等类库，全部都能满足上面的特点。</p>
+<p>但其实我们在平时的应用当中，大多数情况下只能感受到单个实例的好处，也没太多感受到单个实例的坏处。但是我们可以举一个很通俗的例子，我们平时都会通过玩游戏来消遣时间，在Dota中有这么一个道具叫「刷新球」，它的作用是重置所有物品和技能的冷却时间，那如果我玩一个英雄，他的某个技能很厉害，那我是不是出6个「刷新球」，爆炸了...但其实很破坏游戏体验，所以Dota中有一个机制就是不管出多少个刷新球，他们共享一个冷却CD，那怎么实现这样的效果呢？</p>
+<p>单例模式就可以闪亮登场了：</p>
+<pre><code class="language-javascript">// 刷新球类
+class Refresher {
+    constructor() {
+        this.cooldown = 180;
+        this.lastCD = 0;
+        this.timer = null;
+      	this.instance=null;
+    }
+  
+  	// static 静态方法调用直接在类上进行，不能在类的实例上调用。静态方法通常用于创建实用程序函数。
+  	static getInstance() {
+      	if(!this.instance) {
+          this.instance = new Refresher();
+        }
+      	return this.instance;
+    }
+
+    use() {
+        if (this.lastCD) {
+            console.log('技能还没冷却好！');
+            return;
+        }
+
+        this.lastCD = this.cooldown;
+        this.timer = setInterval(() =&gt; {
+            this.lastCD--;
+            if (!this.lastCD) {
+                clearInterval(this.timer);
+            }
+        }, 1000);
+    }
+
+    getCD() {
+        return this.lastCD;
+    }
+}
+
+var refresher = Refresher.getInstance();
+var refresher2 = Refresher.getInstance();
+
+refresher.use();
+
+refresher.getCD(); // 174
+refresher2.getCD(); // 174
+
+refresher.use(); // 技能还没冷却好！
+refresher2.use(); // 技能还没冷却好！
+</code></pre>
+<p>由上可见「单例模式」的作用。在日常工作中，单例模式的使用多被状态管理工具替代了。假如没有状态管理工具，我们也可以借助「单例模式」来实现<strong>购物车功能</strong>。</p>
+<hr>
+<h6 id="参考">参考</h6>
+<p>大话设计模式 -- 程杰<br>
+<a href="https://zhuanlan.zhihu.com/p/34754447">从ES6重新认识JavaScript设计模式(一): 单例模式</a></p>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -133,6 +192,15 @@ email: yuqiusuo53@163.com
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yuqiusuo.github.io/post/20201202/">
+              <h3 class="post-title">
+                3. 设计模式之原则
+              </h3>
+            </a>
+          </div>
         
 
         

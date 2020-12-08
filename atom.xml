@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2020-12-03T01:33:23.532Z</updated>
+    <updated>2020-12-08T14:20:18.942Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -10,6 +10,73 @@
     <logo>https://yuqiusuo.github.io/images/avatar.png</logo>
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 北落师门</rights>
+    <entry>
+        <title type="html"><![CDATA[4.设计模式之单例模式]]></title>
+        <id>https://yuqiusuo.github.io/post/20201208/</id>
+        <link href="https://yuqiusuo.github.io/post/20201208/">
+        </link>
+        <updated>2020-12-08T14:18:36.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>单例模式（Singleton），保证一个类只有一个实例，并提供一个访问它的全局访问点。</p>
+</blockquote>
+<p>一说到只有一个实例，并能全局访问，我觉着前端同学能想到的类库就太多太多了，在前几年我们还没有像现在这样实行模块化开发的时候，我们用到的<code>JQuery</code>、<code>moment</code>、<code>lodash</code>等等类库，全部都能满足上面的特点。</p>
+<p>但其实我们在平时的应用当中，大多数情况下只能感受到单个实例的好处，也没太多感受到单个实例的坏处。但是我们可以举一个很通俗的例子，我们平时都会通过玩游戏来消遣时间，在Dota中有这么一个道具叫「刷新球」，它的作用是重置所有物品和技能的冷却时间，那如果我玩一个英雄，他的某个技能很厉害，那我是不是出6个「刷新球」，爆炸了...但其实很破坏游戏体验，所以Dota中有一个机制就是不管出多少个刷新球，他们共享一个冷却CD，那怎么实现这样的效果呢？</p>
+<p>单例模式就可以闪亮登场了：</p>
+<pre><code class="language-javascript">// 刷新球类
+class Refresher {
+    constructor() {
+        this.cooldown = 180;
+        this.lastCD = 0;
+        this.timer = null;
+      	this.instance=null;
+    }
+  
+  	// static 静态方法调用直接在类上进行，不能在类的实例上调用。静态方法通常用于创建实用程序函数。
+  	static getInstance() {
+      	if(!this.instance) {
+          this.instance = new Refresher();
+        }
+      	return this.instance;
+    }
+
+    use() {
+        if (this.lastCD) {
+            console.log('技能还没冷却好！');
+            return;
+        }
+
+        this.lastCD = this.cooldown;
+        this.timer = setInterval(() =&gt; {
+            this.lastCD--;
+            if (!this.lastCD) {
+                clearInterval(this.timer);
+            }
+        }, 1000);
+    }
+
+    getCD() {
+        return this.lastCD;
+    }
+}
+
+var refresher = Refresher.getInstance();
+var refresher2 = Refresher.getInstance();
+
+refresher.use();
+
+refresher.getCD(); // 174
+refresher2.getCD(); // 174
+
+refresher.use(); // 技能还没冷却好！
+refresher2.use(); // 技能还没冷却好！
+</code></pre>
+<p>由上可见「单例模式」的作用。在日常工作中，单例模式的使用多被状态管理工具替代了。假如没有状态管理工具，我们也可以借助「单例模式」来实现<strong>购物车功能</strong>。</p>
+<hr>
+<h6 id="参考">参考</h6>
+<p>大话设计模式 -- 程杰<br>
+<a href="https://zhuanlan.zhihu.com/p/34754447">从ES6重新认识JavaScript设计模式(一): 单例模式</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[3. 设计模式之原则]]></title>
         <id>https://yuqiusuo.github.io/post/20201202/</id>
@@ -1432,61 +1499,6 @@ console.log(typeof descriptor.get); // &quot;function&quot;
 <li>对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。</li>
 </ul>
 <p>参考 <a href="https://juejin.im/post/5a9923e9518825558251c96a">浏览器的回流与重绘 (Reflow &amp; Repaint)</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[谈前端权限]]></title>
-        <id>https://yuqiusuo.github.io/post/202009141649/</id>
-        <link href="https://yuqiusuo.github.io/post/202009141649/">
-        </link>
-        <updated>2020-09-14T08:48:46.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>自从有了前后端分离，前端的工作内容就变得越发多起来，其中有一项就是权限控制，下面就谈一谈前端权限。</p>
-</blockquote>
-<h4 id="what">WHAT</h4>
-<p>首先我们要理清前端权限是什么，我理解的前端权限就是<strong>控制前端元素是否可见</strong>。因为之前后台模板时代，我们的页面都是通过后台来渲染的，能不能访问到页面直接由后台逻辑判断就好。但是现在我们到了前后端分离时代，所有页面的元素都由页面本身来控制，所以页面路由这块需要由前端本身来控制了。所以我认为前端权限有这几个关键点：</p>
-<ul>
-<li>前端权限是基于前后端分离之上的</li>
-<li>前端只能做视觉上的控制</li>
-<li>权限控制不能放在前端，后台还是需要对每一个接口做验权</li>
-</ul>
-<h4 id="why">WHY</h4>
-<p>下面我们说一说为什么说<strong>前端只能做视觉上的控制</strong>和<strong>权限控制不能放在前端，后台还是需要对每一个接口做验权</strong>。我觉得其实WEB本身就是围绕数据来的，所以我们前端安全，主要是保护我们的<strong>数据</strong>，那和数据最紧密接触的其实还是后台，前端本身做得是<strong>数据的展示和收集</strong>，但是数据的存储和处理并不是由前端来做。所以即使前端能控制住路由/按钮等不被别人看到，发送请求的方式还是有很多，完全可以绕过前端来请求数据。所以从某种意义上来说，就算前端的权限控制做得再严密，可能作用也是有限的。这也引申了后面一句，后台还是要对每一个接口做验权。</p>
-<h4 id="how">HOW</h4>
-<p>但是前端做权限控制还是非常有意义的，我觉得在安全性方面来说，前端就显示人体的皮肤，我们会是WEB安全的第一道防线。前端要做的工作，我认为有三种：</p>
-<ul>
-<li>前端路由展示</li>
-<li>前端按钮级别展示</li>
-<li>调用接口与后台配合</li>
-</ul>
-<ol>
-<li>
-<p>首先，我们所以说前端路由展示。这里其实可以分为两种方式来做路由权限控制：</p>
-<ul>
-<li>前端保存所有路由，通过请求获取权限列表，然后由前端筛选出来可访问路由进行展示</li>
-<li>前端仅保存文件关系，由后台根据user信息生成路由，通过请求传递到前端渲染</li>
-</ul>
-<p>第一种方法比较方便，后一种更灵活，比如我们的页面需要通过后台配置访问，就可以通过第二种方法来实现。</p>
-</li>
-<li>
-<p>按钮级别的展示（Vue示例）</p>
-<ul>
-<li>先通过请求获取到按钮级别的权限列表</li>
-<li>封装一个公用的筛选方法，再通过v-if调用该方法确定是否渲染 <strong>OR</strong> 封装一个指令（directive）来控制按钮是否渲染</li>
-</ul>
-</li>
-<li>
-<p>调用接口与后台配合</p>
-<p>其实我们最主要的与后台沟通的方式还是通过调用接口，与后台进行数据交流，但是如上所说，后台还是需要对每一个接口进行鉴权。前后端配合主要有以下几种方式：</p>
-<ul>
-<li>HTTP Basic Authentication</li>
-<li>session-Cookie   <strong>常用</strong></li>
-<li>Token-Cookie    <strong>常用</strong></li>
-<li>OAuth(开放授权) -- QQ授权登陆常用</li>
-</ul>
-<p>已上几种方法，大家可以很轻松google到相关信息，本篇就不赘述了。已上就是我理解的前端权限~</p>
-</li>
-</ol>
 ]]></content>
     </entry>
 </feed>
