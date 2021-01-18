@@ -2,18 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Flex布局 | 北落师门</title>
+<title>5.设计模式之装饰模式 | 北落师门</title>
 <link rel="shortcut icon" href="https://yuqiusuo.github.io/favicon.ico?v=1610958579244">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://yuqiusuo.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Flex布局 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="5.设计模式之装饰模式 | 北落师门 - Atom Feed" href="https://yuqiusuo.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
     <meta name="description" content="
-..." />
-    <meta name="keywords" content="前端" />
+装饰模式：动态地给一个对象添加一些额外的指责，就增加功能来说，装饰模式比生成子类更加灵活
+
+「装饰模式」对于前端开发者而言一定是非常熟悉的，什么是「装饰模式」呢？顾名思义，「装饰模式」就像是给一个类穿上一件一件衣服，通过不同的搭配，让这个..." />
+    <meta name="keywords" content="设计模式,前端" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -75,15 +77,19 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Flex布局
+              5.设计模式之装饰模式
             </h2>
             <div class="post-info">
               <span>
-                2020-09-14
+                2021-01-18
               </span>
               <span>
-                0 min read
+                3 min read
               </span>
+              
+                <a href="https://yuqiusuo.github.io/tag/LNCoEqkdH/" class="post-tag">
+                  # 设计模式
+                </a>
               
                 <a href="https://yuqiusuo.github.io/tag/eYU20iEfi/" class="post-tag">
                   # 前端
@@ -91,15 +97,111 @@
               
             </div>
             
-              <img class="post-feature-image" src="http://file.yuqiusuo.top/img/20200914171903.png" alt="">
+              <img class="post-feature-image" src="http://file.yuqiusuo.top/img/20210118162742.jpg" alt="">
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <figure data-type="image" tabindex="1"><img src="http://file.yuqiusuo.top/img/20200610113312.png" alt="Flex" loading="lazy"></figure>
+                <blockquote>
+<p>装饰模式：动态地给一个对象添加一些额外的指责，就增加功能来说，装饰模式比生成子类更加灵活</p>
+</blockquote>
+<p>「装饰模式」对于前端开发者而言一定是非常熟悉的，什么是「装饰模式」呢？顾名思义，「装饰模式」就像是给一个类穿上一件一件衣服，通过不同的搭配，让这个类呈现出不同的特点。那我们在工作的过程中，在编写页面的时候，做的好像也是一样的事情对吧？比如按钮组件，他会有<code>default</code>、<code>primary</code>、<code>hover</code>、<code>active</code>、<code>disabled</code>等等状态，我们常用的方式就是通过给<code>button</code>添加不同的<code>class</code>来实现这种种不同的效果，其实这种实现的方式，就是「装饰模式」的应用。只不过今天我们说的是「装饰模式」在JS中的应用而已，我们可以通过CSS的思维来帮助我们理解。</p>
+<p>实例：当下我们需要做一套考试系统，一套试卷由一道道试题组成，试题会有练习、考试和解析3种状态：</p>
+<ul>
+<li>练习状态下，试题需要显示题干和选项</li>
+<li>考试状态下，试题需要显示题干、选项和分数</li>
+<li>解析状态下，题干需要显示题干、选项、分数和解析</li>
+</ul>
+<p>由上我们可以想象出具体的实现模式就是根据源数据在不同条件下显示不同的状态和内容，就可以结合「装饰模式」来实现。</p>
+<pre><code class="language-javascript">// 试题渲染
+class Question {
+    constructor(question) {
+        this.question = question;
+    }
+    
+    render() {
+        console.log(this.question.topic);
+        console.log(this.question.options);
+    }
+}
+
+// 分数渲染装饰器
+class ScoreQuestion {
+    constructor(question) {
+        this.question = question;
+    }
+    
+    render() {
+        this.question.render();
+        console.log(this.question.question.score);
+    }
+}
+
+// 解析渲染装饰器
+class AnalyzeQuestion {
+    constructor(question) {
+        this.question = question;
+    }
+    
+    render() {
+        this.question.render();
+        console.log(this.question.question.analyse);
+    }
+}
+
+const question = {
+    topic: '题干',
+    options: '选项一、选项二、选项三',
+    score: 10,
+    analyse: '选项一是正确答案'
+};
+
+let instance = new Question(question);
+instance.render();
+// 题干
+// 选项一、选项二、选项三
+
+instance = new ScoreQuestion(instance);
+instance.render();
+// 题干
+// 选项一、选项二、选项三
+// 10
+
+instance = new AnalyzeQuestion(instance);
+instance.render();
+// 题干
+// 选项一、选项二、选项三
+// 10
+// 选项一是正确答案
+</code></pre>
+<h4 id="总结">总结</h4>
+<p>如果我们实现一项功能可以做到将核心指责与装饰功能区分的话，就可以使用「装饰模式」来实现。「装饰模式」的优点就在于<strong>把类中的装饰功能从类中搬移去除，这样可以简化原有的类</strong>。</p>
+<hr>
+<h6 id="参考">参考</h6>
+<p>大话设计模式 -- 程杰</p>
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a><br>
+*
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
               </div>
             </div>
           </article>
@@ -108,9 +210,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://yuqiusuo.github.io/post/202009141653/">
+            <a href="https://yuqiusuo.github.io/post/20201208/">
               <h3 class="post-title">
-                JS面向对象-继承
+                4.设计模式之单例模式
               </h3>
             </a>
           </div>
