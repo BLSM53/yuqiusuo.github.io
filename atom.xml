@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yuqiusuo.github.io</id>
     <title>北落师门</title>
-    <updated>2021-01-18T08:29:52.776Z</updated>
+    <updated>2021-01-22T04:52:36.966Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yuqiusuo.github.io"/>
     <link rel="self" href="https://yuqiusuo.github.io/atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://yuqiusuo.github.io/images/avatar.png</logo>
     <icon>https://yuqiusuo.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 北落师门</rights>
+    <entry>
+        <title type="html"><![CDATA[6.设计模式之代理模式]]></title>
+        <id>https://yuqiusuo.github.io/post/2021012201/</id>
+        <link href="https://yuqiusuo.github.io/post/2021012201/">
+        </link>
+        <updated>2021-01-22T04:51:30.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>代理模式：为其他对象提供一种代理以控制对这个对象的访问</p>
+</blockquote>
+<p>当我第一次看到代理模式的定义是，脑海中浮现的一句代码就是<code>const that = this;</code>，我们通过<code>that</code>来代理<code>this</code>的访问，虽然没有体现<strong>控制</strong>的意味，但体现了<strong>代理</strong>的意思。</p>
+<p>在日常的开发工作之中，我对于代理模式的理解是：<strong>对对象的操作添加过滤的手段</strong>。</p>
+<p>之前在工作中遇到一个场景：平台管理系统需要去维护各子系统的公共数据（CommonData），各子系统在使用时去拉取公共数据，但是这样拉取公共数据其实会是比较大的开销，因为公共数据的变化比较缓慢，时效性比较低，我们可以通过代理拉取公共数据的函数来操作。代码如下：</p>
+<pre><code class="language-javascript">// 拉取公共数据函数
+const getCommonData = async (type) =&gt; {
+    return await Ajax(type);
+};
+
+// 代理函数
+const CommonDataMap = new Map();
+const getCommonDataProxy = async (type) =&gt; {
+    let data = CommonDataMap.get(type);
+    if (!data) {
+        data = await getCommonData(type);
+        CommonDataMap.set(type, data);
+    }
+
+    return data;
+};
+</code></pre>
+<p>####使用场景</p>
+<ol>
+<li>远程代理：为一个对象在不同的地址空间提供局部代表，这样可以隐藏一个对象存在不同地址空间的事实</li>
+<li>虚拟代理：根据需要创建开销很大的对象，通过它来存放实例化需要很长时间的真实对象</li>
+<li>安全代理：用来控制，真实对象访问时的权限</li>
+<li>智能指引：值当调用真实的对象时，代理处理另外一些事情</li>
+</ol>
+<h4 id="我的经验">我的经验</h4>
+<p>在前端中，我遇到或使用代理模式的场景有：</p>
+<ul>
+<li>需要对某些类、方法的使用做一层过滤</li>
+<li>需要监听某些类、方法的使用并做处理</li>
+<li>某些DOM懒加载的情况（比如图片懒加载）</li>
+</ul>
+<hr>
+<h6 id="参考">参考</h6>
+<p>大话设计模式 -- 程杰</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[5.设计模式之装饰模式]]></title>
         <id>https://yuqiusuo.github.io/post/2021011801/</id>
@@ -1272,269 +1320,6 @@ var person = new Person('Matthew', 27, 'Software Engineer');
 </code></pre>
 </li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JS面向对象-理解对象]]></title>
-        <id>https://yuqiusuo.github.io/post/202009141651/</id>
-        <link href="https://yuqiusuo.github.io/post/202009141651/">
-        </link>
-        <updated>2020-09-14T08:50:29.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>本篇主要是「JavaScript高级程序设计-面向对象的程序设计」一章中第一篇「理解对象」回顾的笔记</p>
-</blockquote>
-<h2 id="属性类型">属性类型</h2>
-<h3 id="数据属性">数据属性</h3>
-<p>数据属性包含一个数据值的位置，在这个位置可以读取和 写入值。它有4个特性：</p>
-<ul>
-<li><code>[[Configureble]]</code>
-<ul>
-<li>作用
-<ul>
-<li>表示能否通过<code>delete</code>删除属性</li>
-<li>表示能否修改属性的特性</li>
-<li>表示能否把属性修改为访问器属性</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>true</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>[[Enumerable]]</code>
-<ul>
-<li>作用
-<ul>
-<li>表示能否通过<code>for-in</code>循环返回属性</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>true</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>[[Writable]]</code>
-<ul>
-<li>作用
-<ul>
-<li>表示能否修改属性的值</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>true</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>[[Value]]</code>
-<ul>
-<li>作用
-<ul>
-<li>表示能否修改属性的值</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>undefined</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>如要修改属性默认的特性，需要使用<strong>ES5</strong>的<code>defineProperty()</code>方法，它接收3个参数：</p>
-<ul>
-<li>属性所在的对象</li>
-<li>属性的名字</li>
-<li>一个描述符对象
-<ul>
-<li>configurable</li>
-<li>enumerable</li>
-<li>writable</li>
-<li>value</li>
-</ul>
-</li>
-</ul>
-<p>示例：</p>
-<pre><code class="language-javascript">// writable 控制数据是否只读
-var person = {};
-Object.defineProperty(person, 'name', {
-  writable: false,
-  value: 'Nicholas'
-});
-console.log(person.name); // Nicholas
-person.name = 'Greg'；
-console.log(person.name); // Nicholas
-
-// configurable设置为false后就不能再修改
-var person = {};
-Object.defineProperty(person, 'name', {
-  configurable: false,
-  value: 'Nicholas'
-});
-
-var person = {};
-Object.defineProperty(person, 'name', {
-  configurable: true,
-  value: 'Nicholas'
-}); // 报错
-</code></pre>
-<h3 id="访问器属性">访问器属性</h3>
-<p>访问器属性不包含数据值；它们包含一对<code>getter</code>和<code>setter</code>函数。读取时调用<code>getter</code>，写入时调用<code>setter</code>。访问器属性有4个特性：</p>
-<ul>
-<li>
-<p><code>[[Configureble]]</code></p>
-<ul>
-<li>作用
-<ul>
-<li>表示能否通过<code>delete</code>删除属性</li>
-<li>表示能否修改属性的特性</li>
-<li>表示能否把属性修改为访问器属性</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>true</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>[[Enumerable]]</code></p>
-<ul>
-<li>作用
-<ul>
-<li>表示能否通过<code>for-in</code>循环返回属性</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li><code>true</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>[[Set]]</code></p>
-<ul>
-<li>作用
-<ul>
-<li>在读取属性时调用的函数</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li>undefined</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>[[Get]]</code></p>
-<ul>
-<li>作用
-<ul>
-<li>在写入属性时调用的函数</li>
-</ul>
-</li>
-<li>默认值
-<ul>
-<li>undefined</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>示例：</p>
-<pre><code class="language-javascript">var book = {
-  _year: 2004,
-  edition: 1
-};
-Object.defineProperty(book, 'year', {
-  get: function() {
-    return this._year;
-  },
-  set: function(newValue) {
-    if(newValue &gt; 2004) {
-      this._year = newValue;
-      this.edition += newValue - 2004;
-    }
-  }
-});
-
-book.year = 2005;
-console.log(book.edition); // 12
-</code></pre>
-<h2 id="定义多个属性">定义多个属性</h2>
-<p>可以使用<code>Object.defineProperties</code>。示例：</p>
-<pre><code class="language-javascript">var book = {};
-Object.defineProperties(book, {
-  _year: {
-    value: 2004
-  },
-  edition: {
-		value: 1
-  },
-  year: {
-    get: function() {
-      return this._year;
-    },
-    set: function() {
-      if(newValue &gt; 2004) {
-        this._year = newValue;
-        this.edition += newValue - 2004;
-      }
-    }
-  }
-});
-</code></pre>
-<h2 id="读取属性的特性">读取属性的特性</h2>
-<p>使用<code>Object.getOwnPropertyDescriptor()</code>，可以取得给制定属性的描述符。</p>
-<p>接收参数：</p>
-<ul>
-<li>属性所在对象</li>
-<li>要读取其描述符的属性名称</li>
-</ul>
-<p>返回值：</p>
-<ul>
-<li>属性对象</li>
-</ul>
-<p>示例：</p>
-<pre><code class="language-javascript">var book = {};
-Object.defineProperties(book, {
-  _year: {
-    value: 2004
-  },
-  edition: {
-		value: 1
-  },
-  year: {
-    get: function() {
-      return this._year;
-    },
-    set: function() {
-      if(newValue &gt; 2004) {
-        this._year = newValue;
-        this.edition += newValue - 2004;
-      }
-    }
-  }
-});
-
-var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
-console.log(descriptor.value); // 2004
-console.log(descriptor.configurable); // false
-console.log(typeof descriptor.get); // undefined
-
-var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
-console.log(descriptor.value); // undefined
-console.log(descriptor.enumerable); // false
-console.log(typeof descriptor.get); // &quot;function&quot;
-</code></pre>
 ]]></content>
     </entry>
 </feed>
